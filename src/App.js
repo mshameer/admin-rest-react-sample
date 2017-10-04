@@ -25,3 +25,4 @@ const App = () => (
 
 export default App;
 // https://github.com/dincozdemir/admin-on-rest-dinc
+// https://console.firebase.google.com/project/souhrda-hastham/settings/serviceaccounts/adminsdk

@@ -7,13 +7,14 @@ export const UserList = (props) => (
   <List {...props}>
     <Datagrid>
       <TextField label="Name" source="name" />
+      <TextField label="User ID" source="mobileNoId" />
       <ReferenceField label="District" source="districtId" reference="districts" >
         <TextField source="name" />
       </ReferenceField>
       <ReferenceField  label="Zone" source="zoneId" reference="zones" >
         <TextField source="name" />
       </ReferenceField>
-      <TextField label="Email" source="email" />
+      <TextField label="Role" source="role" />
       <EditButton />
     </Datagrid>
   </List>
@@ -38,16 +39,26 @@ const UserTitle = ({ record }) => {
 
   export const UserEdit = (props) => (
     <Edit title={<UserTitle />} {...props}>
-      <SimpleForm validate={validateUserForm} >
-        <ReferenceInput label="District" source="districtId" reference="districts" >
-          <SelectInput optionText="name" />
-        </ReferenceInput>
-        <ReferenceInput label="Zone" source="zoneId" reference="zones" >
-          <SelectInput optionText="name" />
-        </ReferenceInput>
+      <UserForm validate={validateUserForm} >
         <TextInput source="name" />
-        <TextInput source="email" />
-      </SimpleForm>
+        <TextInput source="mobileNoId" label="Mobile No"/>
+        <ReferenceInput label="District" source="districtId" reference="districts" allowEmpty >
+          <SelectInput optionText="name" />
+        </ReferenceInput>
+        <DepOnRefInput label="Zone" source="zoneId" reference="zones" dependsOn="districtId" allowEmpty>
+          <SelectInput optionText="name" />
+        </DepOnRefInput>
+        <DepOnRefInput label="Unit" source="unitId" reference="units" dependsOn="zoneId" allowEmpty>
+          <SelectInput optionText="name" />
+        </DepOnRefInput>
+        <SelectInput source="role" choices={[
+            { id: 'state', name: 'State Admin' },
+            { id: 'district', name: 'District Admin' },
+            { id: 'zone', name: 'Zone Admin' },
+            { id: 'unit', name: 'Unit Admin' },
+            { id: 'member', name: 'Member' },
+        ]} />
+      </UserForm>
     </Edit>
   );
 
@@ -65,6 +76,13 @@ const UserTitle = ({ record }) => {
         <DepOnRefInput label="Unit" source="unitId" reference="units" dependsOn="zoneId" allowEmpty>
           <SelectInput optionText="name" />
         </DepOnRefInput>
+        <SelectInput source="role" choices={[
+            { id: 'state', name: 'State Admin' },
+            { id: 'district', name: 'District Admin' },
+            { id: 'zone', name: 'Zone Admin' },
+            { id: 'unit', name: 'Unit Admin' },
+            { id: 'member', name: 'Member' },
+        ]} />
       </UserForm>
     </Create>
   );

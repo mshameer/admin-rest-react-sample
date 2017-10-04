@@ -3,16 +3,25 @@ import PropTypes from 'prop-types';
 import { reduxForm } from 'redux-form';
 import { connect } from 'react-redux';
 import compose from 'recompose/compose';
+// import {  createUser } from '../utils/firebase-client';
 import getDefaultValues from 'admin-on-rest/lib/mui/form/getDefaultValues';
 import FormInput from 'admin-on-rest/lib/mui/form/FormInput';
 import Toolbar from 'admin-on-rest/lib/mui/form/Toolbar';
+
+
+const USER_CREATE = 'USER_CREATE';
+ const createUser = (email, password) => ({
+    type: USER_CREATE,
+    payload: { email, password },
+    meta: { resource: 'users', fetch: 'ADD_AUTH', cancelPrevious: false },
+});
 
 const formStyle = { padding: '0 1em 1em 1em' };
 
 export class SimpleForm extends Component {
     handleSubmitWithRedirect = (redirect = this.props.redirect) =>
       this.props.handleSubmit(values => {
-        console.log(values);
+        this.props.createUser(`${values.mobileNoId}@sh.com`, 'qwweee123');
         this.props.save(values, redirect)
       });
 
@@ -63,6 +72,7 @@ SimpleForm.propTypes = {
     submitOnEnter: PropTypes.bool,
     toolbar: PropTypes.element,
     validate: PropTypes.func,
+    createUser: PropTypes.func,
 };
 
 SimpleForm.defaultProps = {
@@ -73,6 +83,8 @@ SimpleForm.defaultProps = {
 const enhance = compose(
     connect((state, props) => ({
         initialValues: getDefaultValues(state, props),
+    },{
+      createUser,
     })),
     reduxForm({
         form: 'record-form',

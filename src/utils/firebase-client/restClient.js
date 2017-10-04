@@ -205,7 +205,9 @@ export default (trackedResources = [], firebaseConfig = {}, options = {}) => {
             .then(() => resolve({ data: dataCreate }))
             .catch(reject)
             return
-
+          case 'ADD_AUTH' :
+            console.log( 'sad', resourcesPaths[resource]);
+            return;
           default:
             console.error('Undocumented method: ', type)
             return {data: []}
