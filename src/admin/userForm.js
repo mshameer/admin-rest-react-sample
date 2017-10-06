@@ -7,13 +7,14 @@ import compose from 'recompose/compose';
 import getDefaultValues from 'admin-on-rest/lib/mui/form/getDefaultValues';
 import FormInput from 'admin-on-rest/lib/mui/form/FormInput';
 import Toolbar from 'admin-on-rest/lib/mui/form/Toolbar';
-
+import firebase from 'firebase'
+import { CREATE } from 'admin-on-rest';
 
 const USER_CREATE = 'USER_CREATE';
  const createUser = (email, password) => ({
     type: USER_CREATE,
     payload: { email, password },
-    meta: { resource: 'users', fetch: 'ADD_AUTH', cancelPrevious: false },
+    meta: { resource: 'users', fetch: CREATE },
 });
 
 const formStyle = { padding: '0 1em 1em 1em' };
@@ -22,7 +23,12 @@ export class SimpleForm extends Component {
     handleSubmitWithRedirect = (redirect = this.props.redirect) =>
       this.props.handleSubmit(values => {
         this.props.createUser(`${values.mobileNoId}@sh.com`, 'qwweee123');
-        this.props.save(values, redirect)
+        // this.props.save(values, redirect)
+        // firebase.auth().currentUser.getToken().then(function(idToken) {
+        //   console.log(idToken);
+        // }).catch(function(error) {
+        //   console.log(error);
+        // });
       });
 
     render() {

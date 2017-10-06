@@ -1,13 +1,35 @@
-# node-firebase-rest-api-example
-A simple example using node rest api to create users in firebase authentication.
+# express-firebase
 
-## How to install?
+Simple Firebase Admin Server using NodeJS.
 
-1) Clone the project.
-2) Execute the command <b>npm install</b> inside project folder.
+You used Firebase for auth, realtime DB, and all. Finally you need your own server
+to integrate with 3rd party services, or maybe custom token, or you need server-side operations.
 
-## How to use or test?
+> Have existing express server? Try out [Express Firebase Middleware](https://github.com/antonybudianto/express-firebase-middleware)
 
-1) Set your service account key and database url on file firebase.admin.ts.
-2) To start the project you have to execute the command <b>npm run start</b>, for default is running on port 8090.
-3) The example only have one method, "createUser", accessing for "http:<your_host>/api/user", it is a post method using for create a user on firebase authentication using the sign-in method email/password.
+## How to use
+1. Clone this repo and change directory to the cloned folder
+2. Install the packages
+
+   ```sh
+   npm install
+   ```
+
+3. You need to download your Firebase Service Account json file, please follow the official [instruction](https://firebase.google.com/docs/admin/setup).
+
+    Put the file at project root.
+
+    > :warning: Always make sure the JSON file is git-ignored!
+
+4. Copy `.env.example` file and rename it to `.env` at project root.
+
+    Change the dummy FIREBASE_DATABASE_URL value with your Firebase project databaseURL, you can find it on your Firebase Console
+
+5. Then start the server
+    ```sh
+    npm start
+    ```
+6. It should log successfully, and you can start using Firebase Admin SDK
+
+## License
+MIT

@@ -89,6 +89,7 @@ export default (trackedResources = [], firebaseConfig = {}, options = {}) => {
   return (type, resource, params) => {
     return new Promise((resolve, reject) => {
       resourcesStatus[resource].then(() => {
+        console.log(type);
         switch (type) {
           case GET_LIST:
           case GET_MANY:
