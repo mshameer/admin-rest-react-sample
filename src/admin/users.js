@@ -1,37 +1,91 @@
-import React, { Component } from 'react';
-import { List, Edit, Create, Datagrid, ReferenceField, TextField, EditButton, ReferenceInput, SelectInput, SimpleForm, TextInput } from 'admin-on-rest';
+import React from 'react';
+import { List, Edit, Create, Datagrid, ReferenceField, TextField, EditButton, ReferenceInput, SelectInput, TextInput, DisabledInput } from 'admin-on-rest';
+import { hasPermission, getCurrentUser, getRoles, STATE_LEVEL_PERMISSION, DISTRICT_LEVEL_PERMISSION, ZONE_LEVEL_PERMISSION } from '../utils/permissions';
 import DepOnRefInput from './depOnRefInput';
-import UserForm from './userForm';
+import UserForm from '../users/userForm';
+
+const currentUser = getCurrentUser();
+const orgLevelInput = (source, reference, label, role, dependsOn) => {
+  const RefInput = dependsOn ? DepOnRefInput : ReferenceInput;
+  if(hasPermission(role, STATE_LEVEL_PERMISSION)) {
+    return (
+        <RefInput label={label} source={source} reference={reference} dependsOn={dependsOn} allowEmpty>
+            <SelectInput optionText="name" />
+        </RefInput>
+    );
+  } else {
+    return (
+      <DisabledInput source={source} reference={reference}  defaultValue={currentUser[source]} style={{ display: 'none'}}/>
+    );
+  }
+}
+const roleInput = (role) => {
+  if(hasPermission(role, ZONE_LEVEL_PERMISSION)) {
+    return (
+      <SelectInput source="role" choices={getRoles(role)} />
+    );
+  } else {
+    return (
+      <SelectInput source="role" choices={getRoles(role)}  defaultValue="member" style={{ display: 'none'}}/>
+    );
+  }
+}
+
+const getPermissionBasedFilters = () => {
+  const { districtId, zoneId, unitId, role } = currentUser;
+  const filter = { districtId, zoneId, unitId };
+
+  if(hasPermission(role, STATE_LEVEL_PERMISSION)) {
+    delete(filter.districtId);
+    delete(filter.zoneId);
+    delete(filter.unitId);
+  } else if(hasPermission(role, DISTRICT_LEVEL_PERMISSION)) {
+    delete(filter.zoneId);
+    delete(filter.unitId);
+  } else if(hasPermission(role, ZONE_LEVEL_PERMISSION)) {
+    delete(filter.unitId);
+  }
+
+  return filter;
+}
 
 export const UserList = (props) => (
-  <List {...props}>
-    <Datagrid>
-      <TextField label="Name" source="name" />
-      <TextField label="User ID" source="mobileNoId" />
-      <ReferenceField label="District" source="districtId" reference="districts" >
-        <TextField source="name" />
-      </ReferenceField>
-      <ReferenceField  label="Zone" source="zoneId" reference="zones" >
-        <TextField source="name" />
-      </ReferenceField>
-      <TextField label="Role" source="role" />
-      <EditButton />
-    </Datagrid>
+  <List {...props} filter={ getPermissionBasedFilters() }>
+    { role =>
+      <Datagrid >
+        <TextField label="Name " source="displayName" />
+        <TextField label="User ID" source="phoneNumber" />
+        <ReferenceField label="Category" source="categoryId" reference="categories" >
+          <TextField source="shortName" />
+        </ReferenceField>
+        <ReferenceField label="District" source="districtId" reference="districts" >
+          <TextField source="name" />
+        </ReferenceField>
+        <ReferenceField  label="Zone" source="zoneId" reference="zones" >
+          <TextField source="name" />
+        </ReferenceField>
+        <ReferenceField  label="Unit" source="unitId" reference="units" >
+          <TextField source="name" />
+        </ReferenceField>
+        <TextField label="Role" source="role" />
+        <TextField label="Password" source="password" />
+        <EditButton />
+      </Datagrid>
+    }
   </List>
 );
 
 const UserTitle = ({ record }) => {
-  return <span>User {record ? `"${record.name}"` : ''}</span>;
+  return <span>User {record ? `"${record.displayName}"` : ''}</span>;
   };
 
   const validateUserForm = (values) => {
     const errors = {};
-    const reg = /^\w+([-+.']\w+)*@\w+([-.]\w+)*\.\w+([-.]\w+)*$/
-    if (!values.name) {
-      errors.name = ['User name is required'];
+    if (!values.displayName) {
+      errors.displayName = ['Name is required'];
     }
-    if (values.email && !reg.test(values.email)){
-      errors.email = ['Invalid email address'];
+    if (!values.phoneNumber) {
+      errors.name = ['Mobile No. is required'];
     }
 
     return errors
@@ -39,50 +93,37 @@ const UserTitle = ({ record }) => {
 
   export const UserEdit = (props) => (
     <Edit title={<UserTitle />} {...props}>
-      <UserForm validate={validateUserForm} >
-        <TextInput source="name" />
-        <TextInput source="mobileNoId" label="Mobile No"/>
-        <ReferenceInput label="District" source="districtId" reference="districts" allowEmpty >
-          <SelectInput optionText="name" />
-        </ReferenceInput>
-        <DepOnRefInput label="Zone" source="zoneId" reference="zones" dependsOn="districtId" allowEmpty>
-          <SelectInput optionText="name" />
-        </DepOnRefInput>
-        <DepOnRefInput label="Unit" source="unitId" reference="units" dependsOn="zoneId" allowEmpty>
-          <SelectInput optionText="name" />
-        </DepOnRefInput>
-        <SelectInput source="role" choices={[
-            { id: 'state', name: 'State Admin' },
-            { id: 'district', name: 'District Admin' },
-            { id: 'zone', name: 'Zone Admin' },
-            { id: 'unit', name: 'Unit Admin' },
-            { id: 'member', name: 'Member' },
-        ]} />
-      </UserForm>
+      { role =>
+        <UserForm validate={validateUserForm} action="update" >
+          <TextInput source="displayName" label="Name"/>
+          <TextInput source="phoneNumber" label="Mobile No"/>
+          <TextInput source="password" label="Password"/>
+          <ReferenceInput label="Category" source="categoryId" reference="categories" allowEmpty >
+            <SelectInput optionText="shortName" />
+          </ReferenceInput>
+          { orgLevelInput('districtId', 'districts', 'District', role) }
+          { orgLevelInput('zoneId', 'zones', 'Zone', role, 'districtId') }
+          { orgLevelInput('unitId', 'units', 'Unit', role, 'zoneId') }
+          { roleInput(role) }
+        </UserForm>
+      }
     </Edit>
   );
 
   export const UserCreate = (props) => (
     <Create {...props}>
-      <UserForm validate={validateUserForm} >
-        <TextInput source="name" />
-        <TextInput source="mobileNoId" label="Mobile No"/>
-        <ReferenceInput label="District" source="districtId" reference="districts" allowEmpty >
-          <SelectInput optionText="name" />
-        </ReferenceInput>
-        <DepOnRefInput label="Zone" source="zoneId" reference="zones" dependsOn="districtId" allowEmpty>
-          <SelectInput optionText="name" />
-        </DepOnRefInput>
-        <DepOnRefInput label="Unit" source="unitId" reference="units" dependsOn="zoneId" allowEmpty>
-          <SelectInput optionText="name" />
-        </DepOnRefInput>
-        <SelectInput source="role" choices={[
-            { id: 'state', name: 'State Admin' },
-            { id: 'district', name: 'District Admin' },
-            { id: 'zone', name: 'Zone Admin' },
-            { id: 'unit', name: 'Unit Admin' },
-            { id: 'member', name: 'Member' },
-        ]} />
-      </UserForm>
+      { role =>
+        <UserForm validate={validateUserForm} >
+          <TextInput source="displayName"  label="Name"/>
+          <TextInput source="phoneNumber" label="Mobile No"/>
+          <ReferenceInput label="Category" source="categoryId" reference="categories" allowEmpty >
+            <SelectInput optionText="shortName" />
+          </ReferenceInput>
+          { orgLevelInput('districtId', 'districts', 'District', role) }
+          { orgLevelInput('zoneId', 'zones', 'Zone', role, 'districtId') }
+          { orgLevelInput('unitId', 'units', 'Unit', role, 'zoneId') }
+          { roleInput(role) }
+        </UserForm>
+      }
     </Create>
   );

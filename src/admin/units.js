@@ -1,4 +1,4 @@
-import React, { Component } from 'react';
+import React from 'react';
 import { List, Edit, Create, Datagrid, ReferenceField, TextField, EditButton, ReferenceInput, SelectInput, SimpleForm, TextInput } from 'admin-on-rest';
 import DepOnRefInput from './depOnRefInput';
 
@@ -52,14 +52,16 @@ const UnitTitle = ({ record }) => {
 
   export const UnitCreate = (props) => (
     <Create {...props}>
-      <SimpleForm validate={validateUnitForm} >
-        <ReferenceInput label="District" source="districtId" reference="districts" allowEmpty >
-          <SelectInput optionText="name" />
-        </ReferenceInput>
-        <TextInput source="name" />
-        <DepOnRefInput label="Zone" source="zoneId" reference="zones" dependsOn="districtId" allowEmpty>
-          <SelectInput optionText="name" />
-        </DepOnRefInput>
-      </SimpleForm>
+      { role =>
+        <SimpleForm validate={validateUnitForm} >
+            <TextInput source="name" />
+            <ReferenceInput label="District" source="districtId" reference="districts" allowEmpty >
+              <SelectInput optionText="name" />
+            </ReferenceInput>
+            <DepOnRefInput label="Zone" source="zoneId" reference="zones" dependsOn="districtId" allowEmpty>
+              <SelectInput optionText="name" />
+            </DepOnRefInput>
+        </SimpleForm>
+      }
     </Create>
   );

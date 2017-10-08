@@ -1,6 +1,7 @@
 /* globals localStorage */
-import { AUTH_LOGIN, AUTH_LOGOUT, AUTH_CHECK } from 'admin-on-rest'
+import { AUTH_LOGIN, AUTH_LOGOUT, AUTH_CHECK, AUTH_GET_PERMISSIONS } from 'admin-on-rest'
 import firebase from 'firebase'
+import { hasPermission, APP_LOGIN_PERMISSION } from'../permissions.js'
 
 function firebaseAuthCheck (auth, resolve, reject) {
   if (auth) {
@@ -8,13 +9,11 @@ function firebaseAuthCheck (auth, resolve, reject) {
     firebase.database().ref('/users/' + auth.uid).once('value')
     .then(function (snapshot) {
       const profile = snapshot.val()
-      // TODO make it a parameter
-      if (profile && profile.isAdmin) {
+      if (profile && hasPermission(profile.role, APP_LOGIN_PERMISSION)) {
         auth.getIdToken().then((firebaseToken) => {
           let user = {auth, profile, firebaseToken}
-
-          // TODO improve this! Save it on redux or something
           localStorage.setItem('firebaseToken', firebaseToken)
+          localStorage.setItem('currentUser', JSON.stringify(profile))
           resolve(user)
         })
         .catch(err => {
@@ -41,7 +40,7 @@ export default (type, params) => {
     return new Promise((resolve, reject) => {
       firebase.auth().onAuthStateChanged(function(user) {
         if (user) {
-          resolve();
+          resolve(user);
         } else {
           reject(new Error('User not found'))
         }
@@ -56,6 +55,10 @@ export default (type, params) => {
       .then(auth => firebaseAuthCheck(auth, resolve, reject))
       .catch(e => reject(new Error('User not found')))
     })
+  }
+  if (type === AUTH_GET_PERMISSIONS) {
+    const currentUser = JSON.parse(localStorage.getItem('currentUser'));
+    return Promise.resolve(currentUser.role);
   }
   return Promise.resolve()
 }

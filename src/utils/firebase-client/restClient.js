@@ -89,7 +89,6 @@ export default (trackedResources = [], firebaseConfig = {}, options = {}) => {
   return (type, resource, params) => {
     return new Promise((resolve, reject) => {
       resourcesStatus[resource].then(() => {
-        console.log(type);
         switch (type) {
           case GET_LIST:
           case GET_MANY:
@@ -206,9 +205,6 @@ export default (trackedResources = [], firebaseConfig = {}, options = {}) => {
             .then(() => resolve({ data: dataCreate }))
             .catch(reject)
             return
-          case 'ADD_AUTH' :
-            console.log( 'sad', resourcesPaths[resource]);
-            return;
           default:
             console.error('Undocumented method: ', type)
             return {data: []}

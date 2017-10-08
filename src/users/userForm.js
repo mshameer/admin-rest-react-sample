@@ -3,32 +3,26 @@ import PropTypes from 'prop-types';
 import { reduxForm } from 'redux-form';
 import { connect } from 'react-redux';
 import compose from 'recompose/compose';
-// import {  createUser } from '../utils/firebase-client';
 import getDefaultValues from 'admin-on-rest/lib/mui/form/getDefaultValues';
 import FormInput from 'admin-on-rest/lib/mui/form/FormInput';
 import Toolbar from 'admin-on-rest/lib/mui/form/Toolbar';
-import firebase from 'firebase'
-import { CREATE } from 'admin-on-rest';
 
-const USER_CREATE = 'USER_CREATE';
- const createUser = (email, password) => ({
-    type: USER_CREATE,
-    payload: { email, password },
-    meta: { resource: 'users', fetch: CREATE },
-});
+import { createAuthUser, updateAuthUser } from './actions';
 
 const formStyle = { padding: '0 1em 1em 1em' };
 
 export class SimpleForm extends Component {
     handleSubmitWithRedirect = (redirect = this.props.redirect) =>
       this.props.handleSubmit(values => {
-        this.props.createUser(`${values.mobileNoId}@sh.com`, 'qwweee123');
-        // this.props.save(values, redirect)
-        // firebase.auth().currentUser.getToken().then(function(idToken) {
-        //   console.log(idToken);
-        // }).catch(function(error) {
-        //   console.log(error);
-        // });
+
+        if(this.props.action === 'update') {
+          this.props.updateUser(values);
+        } else {
+          this.props.createUser({
+            ...values,
+            password: Math.random().toString(36).slice(-8),
+          });
+        }
       });
 
     render() {
@@ -79,19 +73,23 @@ SimpleForm.propTypes = {
     toolbar: PropTypes.element,
     validate: PropTypes.func,
     createUser: PropTypes.func,
+    updateUser: PropTypes.func,
+    action: PropTypes.string,
 };
 
 SimpleForm.defaultProps = {
     submitOnEnter: true,
+    action: 'create',
     toolbar: <Toolbar />,
 };
 
 const enhance = compose(
     connect((state, props) => ({
         initialValues: getDefaultValues(state, props),
-    },{
-      createUser,
-    })),
+    }),{
+      createUser: createAuthUser,
+      updateUser: updateAuthUser,
+    }),
     reduxForm({
         form: 'record-form',
         enableReinitialize: true,
