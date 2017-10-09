@@ -11,6 +11,7 @@ import appReducers from './reducers';
 import appSagas from './sagas';
 import Login from './auth/Login';
 import Menu from './layout/menu';
+import AppLayout from './layout/appLayout.js';
 import firebaseConfig from './config/firebase';
 
 const trackedResources = ['districts', 'zones', 'units', 'users', 'categories'];
@@ -19,6 +20,7 @@ const App = () => (
     <Admin
       restClient={RestClient(trackedResources, firebaseConfig)}
       authClient={AuthClient}
+      appLayout={AppLayout}
       loginPage={Login}
       menu={Menu}
       title="Souhrda Hastham"

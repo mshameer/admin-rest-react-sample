@@ -2,50 +2,47 @@ import React from 'react';
 import { MenuItemLink } from 'admin-on-rest';
 import Divider from 'material-ui/Divider';
 import ArrowDropRight from 'material-ui/svg-icons/navigation-arrow-drop-right';
-import {List, ListItem} from 'material-ui/List';
+import List from 'material-ui/List';
 import ActionGrade from 'material-ui/svg-icons/action/grade';
 import ContentInbox from 'material-ui/svg-icons/content/inbox';
 import ContentDrafts from 'material-ui/svg-icons/content/drafts';
 import ContentSend from 'material-ui/svg-icons/content/send';
 
+import MenuItem from './menuItem';
+
 export default ({ resources, onMenuTap, logout }) => (
-    <div>
     <List>
-          <ListItem primaryText="Sent mail"  to="/districts" onClick={onMenuTap} leftIcon={<ContentSend />} />
-          <ListItem primaryText="Drafts" leftIcon={<ContentDrafts />} />
-          <ListItem
-             primaryText="Inbox"
-             leftIcon={<ContentInbox />}
+          <MenuItem primaryText="Users"  to="/users" onClick={onMenuTap} leftIcon={<ContentSend />} />
+          <MenuItem
+             primaryText="Organization"
+             leftIcon={<ContentInbox style={{ width:20, height: 20}} />}
              initiallyOpen={true}
              primaryTogglesNestedList={true}
+             innerDivStyle={{ padding: '16px 36px 16px 40px'}}
              nestedItems={[
-               <ListItem
+               <MenuItem
                  key={1}
-                 primaryText="Starred"
+                 primaryText="Categories"
                  leftIcon={<ActionGrade />}
                />,
-               <ListItem
+               <MenuItem
+                 key={1}
+                 primaryText="District"
+                 leftIcon={<ActionGrade />}
+               />,
+               <MenuItem
                  key={2}
-                 primaryText="Sent Mail"
+                 primaryText="Zone"
                  leftIcon={<ContentSend />}
                  disabled={true}
-                 nestedItems={[
-                   <ListItem key={1} primaryText="Drafts" leftIcon={<ContentDrafts />} />,
-                 ]}
                />,
-               <ListItem
+               <MenuItem
                  key={3}
-                 primaryText="Inbox"
+                 primaryText="Unit"
                  leftIcon={<ContentInbox />}
-                 nestedItems={[
-                   <ListItem key={1} primaryText="Drafts" leftIcon={<ContentDrafts />} />,
-                 ]}
                />,
              ]}
            />
     </List>
-        <MenuItemLink to="/districts" primaryText="District" onClick={onMenuTap} />
-        <MenuItemLink to="/comments" primaryText="Comments" onClick={onMenuTap} />
-        <MenuItemLink to="/custom-route" primaryText="Miscellaneous" onClick={onMenuTap} />
-    </div>
+
 );
