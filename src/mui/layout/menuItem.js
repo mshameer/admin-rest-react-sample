@@ -7,15 +7,15 @@ import { withRouter } from 'react-router';
 export class MenuItemLinkComponent extends Component {
     static propTypes = {
         history: PropTypes.object.isRequired,
-        onClick: PropTypes.func.isRequired,
-        to: PropTypes.string.isRequired,
+        onClick: PropTypes.func,
+        to: PropTypes.string,
     };
 
     handleMenuTap = () => {
       if(this.props.onClick) {
         this.props.history.push(this.props.to);
         this.props.onClick();
-      }  
+      }
     };
     render() {
         const {

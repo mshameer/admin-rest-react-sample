@@ -1,8 +1,10 @@
 import React from 'react';
-import { List, Edit, Create, Datagrid, ReferenceField, TextField, EditButton, ReferenceInput, SelectInput, TextInput, DisabledInput } from 'admin-on-rest';
+import {Edit, Create, Datagrid, ReferenceField, TextField, EditButton,
+  ReferenceInput, SelectInput, TextInput, DisabledInput, Filter, Responsive, SimpleList } from 'admin-on-rest';
 import { hasPermission, getCurrentUser, getRoles, STATE_LEVEL_PERMISSION, DISTRICT_LEVEL_PERMISSION, ZONE_LEVEL_PERMISSION } from '../utils/permissions';
 import DepOnRefInput from './depOnRefInput';
 import UserForm from '../users/userForm';
+import List from '../mui/list';
 
 const currentUser = getCurrentUser();
 const orgLevelInput = (source, reference, label, role, dependsOn) => {
@@ -49,28 +51,52 @@ const getPermissionBasedFilters = () => {
   return filter;
 }
 
+const UserFilter = (props) => (
+    <Filter {...props}>
+        <TextInput label="Search" source="q" alwaysOn />
+    </Filter>
+);
+
+
 export const UserList = (props) => (
-  <List {...props} filter={ getPermissionBasedFilters() }>
+  <List
+    {...props}
+    filter={ getPermissionBasedFilters() }
+    filters={<UserFilter />}
+    title="Members"
+  >
     { role =>
-      <Datagrid >
-        <TextField label="Name " source="displayName" />
-        <TextField label="User ID" source="phoneNumber" />
-        <ReferenceField label="Category" source="categoryId" reference="categories" >
-          <TextField source="shortName" />
-        </ReferenceField>
-        <ReferenceField label="District" source="districtId" reference="districts" >
-          <TextField source="name" />
-        </ReferenceField>
-        <ReferenceField  label="Zone" source="zoneId" reference="zones" >
-          <TextField source="name" />
-        </ReferenceField>
-        <ReferenceField  label="Unit" source="unitId" reference="units" >
-          <TextField source="name" />
-        </ReferenceField>
-        <TextField label="Role" source="role" />
-        <TextField label="Password" source="password" />
-        <EditButton />
-      </Datagrid>
+
+      <Responsive
+        small={
+          <SimpleList
+            primaryText={record => record.displayName}
+            tertiaryText={record => record.role}
+            secondaryText={record => record.phoneNumber}
+            />
+        }
+        medium={
+          <Datagrid >
+            <TextField label="Name " source="displayName" />
+            <TextField label="User ID" source="phoneNumber" />
+            <ReferenceField label="Category" source="categoryId" reference="categories" >
+              <TextField source="shortName" />
+            </ReferenceField>
+            <ReferenceField label="District" source="districtId" reference="districts" >
+              <TextField source="name" />
+            </ReferenceField>
+            <ReferenceField  label="Zone" source="zoneId" reference="zones" >
+              <TextField source="name" />
+            </ReferenceField>
+            <ReferenceField  label="Unit" source="unitId" reference="units" >
+              <TextField source="name" />
+            </ReferenceField>
+            <TextField label="Role" source="role" />
+            <TextField label="Password" source="password" />
+            <EditButton />
+          </Datagrid>
+        }
+        />
     }
   </List>
 );

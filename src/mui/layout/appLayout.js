@@ -7,21 +7,20 @@ import autoprefixer from 'material-ui/utils/autoprefixer';
 import CircularProgress from 'material-ui/CircularProgress';
 import withWidth from 'material-ui/utils/withWidth';
 import compose from 'recompose/compose';
+import { setSidebarVisibility as setSidebarVisibilityAction } from 'admin-on-rest/lib/actions';
 
 import AdminRoutes from 'admin-on-rest/lib/AdminRoutes';
 import AppBar from 'admin-on-rest/lib/mui/layout/AppBar';
-import Sidebar from 'admin-on-rest/lib/mui/layout/Sidebar';
 import Menu from 'admin-on-rest/lib/mui/layout/Menu';
 import Notification from 'admin-on-rest/lib/mui/layout/Notification';
-import defaultTheme from './theme';
-import { setSidebarVisibility as setSidebarVisibilityAction } from 'admin-on-rest/lib/actions';
+import defaultTheme from '../../config/theme';
+import Sidebar from './sidebar';
 import styles from './styles';
 
 const prefixedStyles = {};
 
 class AppLayout extends Component {
     componentWillMount() {
-      console.log(this.props.width);
         if (this.props.width !== 1) {
             this.props.setSidebarVisibility(true);
         }
@@ -84,7 +83,7 @@ class AppLayout extends Component {
                                     {children}
                                 </AdminRoutes>
                             </div>
-                            <Sidebar theme={theme}>
+                            <Sidebar theme={theme} >
                                 {createElement(menu || Menu, {
                                     logout,
                                     hasDashboard: !!dashboard,

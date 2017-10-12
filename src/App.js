@@ -10,8 +10,8 @@ import { RestClient, AuthClient } from './utils/firebase-client';
 import appReducers from './reducers';
 import appSagas from './sagas';
 import Login from './auth/Login';
-import Menu from './layout/menu';
-import AppLayout from './layout/appLayout.js';
+import Menu from './mui/layout/menu';
+import AppLayout from './mui/layout/appLayout.js';
 import firebaseConfig from './config/firebase';
 
 const trackedResources = ['districts', 'zones', 'units', 'users', 'categories'];

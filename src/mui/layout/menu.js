@@ -1,11 +1,7 @@
 import React from 'react';
-import { MenuItemLink } from 'admin-on-rest';
-import Divider from 'material-ui/Divider';
-import ArrowDropRight from 'material-ui/svg-icons/navigation-arrow-drop-right';
 import List from 'material-ui/List';
 import ActionGrade from 'material-ui/svg-icons/action/grade';
 import ContentInbox from 'material-ui/svg-icons/content/inbox';
-import ContentDrafts from 'material-ui/svg-icons/content/drafts';
 import ContentSend from 'material-ui/svg-icons/content/send';
 
 import MenuItem from './menuItem';
@@ -26,18 +22,18 @@ export default ({ resources, onMenuTap, logout }) => (
                  leftIcon={<ActionGrade />}
                />,
                <MenuItem
-                 key={1}
+                 key={2}
                  primaryText="District"
                  leftIcon={<ActionGrade />}
                />,
                <MenuItem
-                 key={2}
+                 key={3}
                  primaryText="Zone"
                  leftIcon={<ContentSend />}
                  disabled={true}
                />,
                <MenuItem
-                 key={3}
+                 key={4}
                  primaryText="Unit"
                  leftIcon={<ContentInbox />}
                />,

@@ -14,6 +14,9 @@ const themeDefault = getMuiTheme({
   },
   raisedButton: {
     primaryColor: blue600,
+  },
+  sideBar: {
+    backgroundColor: '#FFF',
   }
 });
 
