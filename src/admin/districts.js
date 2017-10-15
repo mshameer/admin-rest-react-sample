@@ -1,15 +1,18 @@
 import React from 'react';
-import { List, Edit, Create, Datagrid, TextField, EditButton, SimpleForm, TextInput, Responsive, SimpleList  } from 'admin-on-rest';
+import { Edit, Create, Datagrid, TextField, EditButton, SimpleForm, TextInput, Responsive  } from 'admin-on-rest';
+import SimpleList from '../mui/list/simpleList'
+import List from '../mui/list';
+import Business from 'material-ui/svg-icons/communication/business';
+import Avatar from 'material-ui/Avatar';
 
 export const DistrictList = (props) => (
-  <List {...props}>
+  <List {...props} title="Districts">
     <Responsive
       small={
-        <SimpleList
-          primaryText={record => record.name}
-          tertiaryText={record => record.email}
-          secondaryText={record => record.code}
-          />
+        <SimpleList leftAvatar={record => <Avatar icon={<Business />} />} >
+          <TextField label="Name" source="name" type="primary" />
+          <TextField label="Email" source="email" type="secondary" />
+        </SimpleList>
       }
       medium={
         <Datagrid>

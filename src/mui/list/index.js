@@ -16,7 +16,7 @@ import queryReducer, {
 import ListHead from './listHead';
 import Title from 'admin-on-rest/lib/mui/layout/Title';
 import DefaultPagination from 'admin-on-rest/lib/mui/list/Pagination';
-import DefaultActions from 'admin-on-rest/lib/mui/list/Actions';
+import DefaultActions from './actions';
 import { crudGetList as crudGetListAction } from 'admin-on-rest/lib/actions/dataActions';
 import { changeListParams as changeListParamsAction } from 'admin-on-rest/lib/actions/listActions';
 import { refreshView as refreshViewAction } from 'admin-on-rest/lib/actions/uiActions';

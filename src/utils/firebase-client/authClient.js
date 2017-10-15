@@ -1,7 +1,7 @@
 /* globals localStorage */
 import { AUTH_LOGIN, AUTH_LOGOUT, AUTH_CHECK, AUTH_GET_PERMISSIONS } from 'admin-on-rest'
 import firebase from 'firebase'
-import { hasPermission, APP_LOGIN_PERMISSION } from'../permissions.js'
+import { hasPermission, getCurrentUser, APP_LOGIN_PERMISSION } from'../permissions.js'
 
 function firebaseAuthCheck (auth, resolve, reject) {
   if (auth) {
@@ -57,7 +57,7 @@ export default (type, params) => {
     })
   }
   if (type === AUTH_GET_PERMISSIONS) {
-    const currentUser = JSON.parse(localStorage.getItem('currentUser'));
+    const currentUser = getCurrentUser();
     return Promise.resolve(currentUser.role);
   }
   return Promise.resolve()

@@ -1,15 +1,18 @@
 import React from 'react';
-import { List, Edit, Create, Datagrid, TextField, EditButton, SimpleForm, TextInput, Responsive, SimpleList  } from 'admin-on-rest';
+import { Edit, Create, Datagrid, TextField, EditButton, SimpleForm, TextInput, Responsive } from 'admin-on-rest';
+import Layers from 'material-ui/svg-icons/maps/layers';
+import List from '../mui/list';
+import SimpleList from '../mui/list/simpleList';
+import Avatar from 'material-ui/Avatar';
 
 export const CategoryList = (props) => (
-  <List {...props}>
+  <List {...props} title="Categories">
     <Responsive
       small={
-        <SimpleList
-          primaryText={record => record.name}
-          tertiaryText={record => record.email}
-          secondaryText={record => record.code}
-          />
+        <SimpleList leftAvatar={record => <Avatar icon={<Layers />} />} >
+          <TextField label="Name" source="name" type="primary" />
+          <TextField label="Email" source="shortName" type="secondary" />
+        </SimpleList>
       }
       medium={
         <Datagrid>

@@ -1,16 +1,36 @@
 import React from 'react';
-import { List, Edit, Create, Datagrid, ReferenceField, TextField, EditButton, ReferenceInput, SelectInput, SimpleForm, TextInput } from 'admin-on-rest';
+import { Edit, Create, Datagrid, ReferenceField, TextField, Responsive,
+  EditButton, ReferenceInput, SelectInput, SimpleForm, TextInput } from 'admin-on-rest';
+import SimpleList from '../mui/list/simpleList'
+import List from '../mui/list';
+import Avatar from 'material-ui/Avatar';
+import Snooze from 'material-ui/svg-icons/av/snooze';
 
 export const ZoneList = (props) => (
   <List {...props}>
-    <Datagrid>
-      <TextField label="Name" source="name" />
-      <ReferenceField label="District" source="districtId" reference="districts" >
-        <TextField source="name" />
-      </ReferenceField>
-      <TextField label="Email" source="email" />
-      <EditButton />
-    </Datagrid>
+    <Responsive
+      small={
+        <SimpleList
+          secondaryText="Dist: "
+          leftAvatar={record => <Avatar icon={<Snooze />} />}
+        >
+          <TextField label="Name" source="name" type="primary" />
+          <ReferenceField label="District" source="districtId" reference="districts" type="secondary" linkType="none" >
+            <TextField source="name" />
+          </ReferenceField>
+        </SimpleList>
+      }
+      medium={
+        <Datagrid>
+          <TextField label="Name" source="name" />
+          <ReferenceField label="District" source="districtId" reference="districts" >
+            <TextField source="name" />
+          </ReferenceField>
+          <TextField label="Email" source="email" />
+          <EditButton />
+        </Datagrid>
+      }
+      />
   </List>
 );
 
@@ -51,6 +71,6 @@ const ZoneTitle = ({ record }) => {
         </ReferenceInput>
         <TextInput source="name" />
         <TextInput source="email" />
-      </SimpleForm>  
+      </SimpleForm>
     </Create>
   );

@@ -1,10 +1,13 @@
 import React from 'react';
 import {Edit, Create, Datagrid, ReferenceField, TextField, EditButton,
-  ReferenceInput, SelectInput, TextInput, DisabledInput, Filter, Responsive, SimpleList } from 'admin-on-rest';
+  ReferenceInput, SelectInput, TextInput, DisabledInput, Filter, Responsive } from 'admin-on-rest';
 import { hasPermission, getCurrentUser, getRoles, STATE_LEVEL_PERMISSION, DISTRICT_LEVEL_PERMISSION, ZONE_LEVEL_PERMISSION } from '../utils/permissions';
 import DepOnRefInput from './depOnRefInput';
 import UserForm from '../users/userForm';
 import List from '../mui/list';
+import SimpleList from '../mui/list/simpleList';
+import Avatar from 'material-ui/Avatar';
+
 
 const currentUser = getCurrentUser();
 const orgLevelInput = (source, reference, label, role, dependsOn) => {
@@ -69,11 +72,13 @@ export const UserList = (props) => (
 
       <Responsive
         small={
-          <SimpleList
-            primaryText={record => record.displayName}
-            tertiaryText={record => record.role}
-            secondaryText={record => record.phoneNumber}
-            />
+          <SimpleList leftAvatar={record => <Avatar>{record.displayName.charAt(0).toUpperCase()}</Avatar> } >
+            <TextField label="Name " source="displayName"  type="primary"/>
+            <TextField label="User ID" source="phoneNumber" type="secondary"/>
+            <ReferenceField label="Category" source="categoryId" reference="categories" type="tertiary" linkType="none">
+              <TextField source="shortName" />
+            </ReferenceField>
+          </SimpleList>
         }
         medium={
           <Datagrid >

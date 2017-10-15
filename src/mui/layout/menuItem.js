@@ -26,7 +26,7 @@ export class MenuItemLinkComponent extends Component {
             ...props
         } = this.props;
 
-        return <ListItem {...props} onClick={this.handleMenuTap} />;
+        return <ListItem {...props}  innerDivStyle={{ padding: '16px 36px 16px 55px'}} onClick={this.handleMenuTap} />;
     }
 }
 

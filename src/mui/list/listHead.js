@@ -14,6 +14,7 @@ const styles = {
 };
 
 class ListHead extends Component {
+
   render() {
     const {
       title,

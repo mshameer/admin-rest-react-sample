@@ -1,20 +1,44 @@
 import React from 'react';
-import { List, Edit, Create, Datagrid, ReferenceField, TextField, EditButton, ReferenceInput, SelectInput, SimpleForm, TextInput } from 'admin-on-rest';
+import { Edit, Create, Datagrid, ReferenceField, TextField, EditButton,
+  ReferenceInput, SelectInput, SimpleForm, TextInput, Responsive } from 'admin-on-rest';
 import DepOnRefInput from './depOnRefInput';
+import SimpleList from '../mui/list/simpleList'
+import List from '../mui/list';
+import Nature from 'material-ui/svg-icons/image/nature';
+import Avatar from 'material-ui/Avatar';
 
 export const UnitList = (props) => (
   <List {...props}>
-    <Datagrid>
-      <TextField label="Name" source="name" />
-      <ReferenceField label="District" source="districtId" reference="districts" >
-        <TextField source="name" />
-      </ReferenceField>
-      <ReferenceField  label="Zone" source="zoneId" reference="zones" >
-        <TextField source="name" />
-      </ReferenceField>
-      <TextField label="Email" source="email" />
-      <EditButton />
-    </Datagrid>
+    <Responsive
+      small={
+        <SimpleList
+          secondaryText="Dist: "
+          secondaryPlusText="Zone: "
+          leftAvatar={record => <Avatar icon={<Nature />} />}
+        >
+          <TextField label="Name" source="name" type="primary"/>
+          <ReferenceField label="District" source="districtId" reference="districts" type="secondary" linkType="none" >
+            <TextField source="name" />
+          </ReferenceField>
+          <ReferenceField  label="Zone" source="zoneId" reference="zones" type='secondaryPlus' linkType="none" >
+            <TextField source="name" />
+          </ReferenceField>
+        </SimpleList>
+      }
+      medium={
+        <Datagrid>
+          <TextField label="Name" source="name" />
+          <ReferenceField label="District" source="districtId" reference="districts" >
+            <TextField source="name" />
+          </ReferenceField>
+          <ReferenceField  label="Zone" source="zoneId" reference="zones" >
+            <TextField source="name" />
+          </ReferenceField>
+          <TextField label="Email" source="email" />
+          <EditButton />
+        </Datagrid>
+      }
+      />
   </List>
 );
 

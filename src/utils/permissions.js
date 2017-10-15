@@ -26,7 +26,11 @@ const permissionRules  = {
 }
 
 export function getCurrentUser(){
-  return JSON.parse(localStorage.getItem('currentUser'));
+  const currentUser = localStorage.getItem('currentUser');
+  if(!currentUser) {
+    return {};
+  }
+  return JSON.parse(currentUser);
 }
 
 export function hasPermission(role, type) {
@@ -55,3 +59,5 @@ export function getRoles(role){
     });
     return allowedRoles;
 }
+
+export const WithPermission = ({type, role, children}) =>  hasPermission(role, type) && children;

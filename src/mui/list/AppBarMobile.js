@@ -8,11 +8,11 @@ import IconMenu from 'material-ui/IconMenu';
 import MenuItem from 'material-ui/MenuItem';
 import MoreVertIcon from 'material-ui/svg-icons/navigation/more-vert';
 import SearchIcon from 'material-ui/svg-icons/action/search';
-import Slider from 'material-ui/Slider';
 import {white, blue600} from 'material-ui/styles/colors';
 import TextField from 'material-ui/TextField';
 import compose from 'recompose/compose';
 import { toggleSidebar as toggleSidebarAction } from 'admin-on-rest/lib/actions';
+import { refreshView as refreshViewAction } from 'admin-on-rest/lib/actions/uiActions';
 
 const styles = {
     bar: {
@@ -48,6 +48,7 @@ const styles = {
        height: 30,
        width: 120,
        padding: '12px 12px 0',
+       display: 'none',
      },
      inputStyle: {
        color: white,
@@ -69,44 +70,46 @@ const styles = {
      },
    };
 
-const Logged = (props) => (
-  <div style={styles.tools} >
-    <TextField
-      hintText="Search..."
-      underlineShow={false}
-      style={styles.textField}
-      inputStyle={styles.inputStyle}
-      hintStyle={styles.hintStyle}
-      />
-    <IconButton style={styles.iconButton}>
-      <SearchIcon color={white} />
-    </IconButton>
-    <IconMenu
-      {...props}
-      iconButtonElement={
-        <IconButton><MoreVertIcon color="#FFF" /></IconButton>
-      }
-      targetOrigin={{horizontal: 'right', vertical: 'top'}}
-      anchorOrigin={{horizontal: 'right', vertical: 'top'}}
-      style={{marginTop: 0}}
-    >
-      <MenuItem primaryText="Refresh" />
-      <MenuItem primaryText="Help" />
-      <MenuItem primaryText="Sign out" />
-    </IconMenu>
-  </div>
-);
-
-
-
 class AppBarMobile extends Component {
     handleLeftIconButtonTouchTap = event => {
         event.preventDefault();
         this.props.toggleSidebar();
     };
 
+    handleRefresh = event => {
+        event.preventDefault();
+        this.props.refreshView();
+    };
+
     render() {
         const { title } = this.props;
+        const loggedMenu =  (
+          <div style={styles.tools} >
+            <TextField
+              hintText="Search..."
+              underlineShow={false}
+              style={styles.textField}
+              inputStyle={styles.inputStyle}
+              hintStyle={styles.hintStyle}
+              />
+            <IconButton style={styles.iconButton}>
+              <SearchIcon color={white} />
+            </IconButton>
+            <IconMenu
+              iconButtonElement={
+                <IconButton><MoreVertIcon color="#FFF" /></IconButton>
+              }
+              targetOrigin={{horizontal: 'right', vertical: 'top'}}
+              anchorOrigin={{horizontal: 'right', vertical: 'top'}}
+              style={{marginTop: 0}}
+            >
+              <MenuItem primaryText="Refresh" onClick={this.handleRefresh} />
+              <MenuItem primaryText="Help" />
+              <MenuItem primaryText="Sign out" />
+            </IconMenu>
+          </div>
+        );
+
         return (
             <MuiAppBar
                 style={styles.bar}
@@ -115,22 +118,23 @@ class AppBarMobile extends Component {
                 iconStyleRight={styles.iconLeft}
                 title={title}
                 onLeftIconButtonTouchTap={this.handleLeftIconButtonTouchTap}
-                iconElementRight={<Logged />}
+                iconElementRight={loggedMenu}
             />
         );
     }
 }
 
 AppBarMobile.propTypes = {
-    title: PropTypes.oneOfType([PropTypes.string, PropTypes.element])
-        .isRequired,
+    title: PropTypes.oneOfType([PropTypes.string, PropTypes.element]),
     toggleSidebar: PropTypes.func.isRequired,
+    refreshView: PropTypes.func.isRequired,
 };
 
 const enhance = compose(
     muiThemeable(), // force redraw on theme change
     connect(null, {
         toggleSidebar: toggleSidebarAction,
+        refreshView: refreshViewAction
     })
 );
 
