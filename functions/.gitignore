@@ -10,5 +10,3 @@ dist
 tmp
 perf-logs
 v8.log
-*.js
-*.js.map
