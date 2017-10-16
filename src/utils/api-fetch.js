@@ -4,7 +4,7 @@ import fetch from 'isomorphic-fetch'
 import qs from 'qs';
 
 const apiConfig = {
-	url: 'http://localhost:8081/api',
+	url: 'https://us-central1-souhrda-hastham.cloudfunctions.net/app/api',
 }
 
 export const exceptionExtractError = (exception) => {

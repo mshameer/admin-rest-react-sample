@@ -109,6 +109,7 @@ export default ({ resources, onMenuTap, logout }) => (
            ]}
          />
       </WithPermission>
+      {logout}
     </List>
   </div>
 

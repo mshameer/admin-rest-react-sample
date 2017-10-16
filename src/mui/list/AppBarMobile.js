@@ -60,7 +60,6 @@ const styles = {
      },
      tools: {
        display: 'inline-flex',
-       marginRight: '-10px',
      },
      headline: {
        fontSize: 24,
