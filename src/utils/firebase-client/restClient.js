@@ -144,8 +144,8 @@ export default (trackedResources = [], firebaseConfig = {}, options = {}) => {
                 arraySort(values, params.sort.field, {reverse: params.sort.order !== 'ASC'})
               }
 
-              const {page, perPage} = params.pagination
-              const _start = (page - 1) * perPage
+              const {page, perPage, infinit} = params.pagination
+              const _start = infinit ? 0 : (page - 1) * perPage
               const _end = page * perPage
               data = values.slice(_start, _end)
               ids = Object.keys(resourcesData[resource]).slice(_start, _end)

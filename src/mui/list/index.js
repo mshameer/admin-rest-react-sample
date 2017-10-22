@@ -16,6 +16,8 @@ import queryReducer, {
 import ListHead from './listHead';
 import Title from 'admin-on-rest/lib/mui/layout/Title';
 import DefaultPagination from 'admin-on-rest/lib/mui/list/Pagination';
+import withWidth from 'material-ui/utils/withWidth';
+
 import DefaultActions from './actions';
 import { crudGetList as crudGetListAction } from 'admin-on-rest/lib/actions/dataActions';
 import { changeListParams as changeListParamsAction } from 'admin-on-rest/lib/actions/listActions';
@@ -37,6 +39,15 @@ export class List extends Component {
         if (Object.keys(this.props.query).length > 0) {
             this.props.changeListParams(this.props.resource, this.props.query);
         }
+        if(this.props.width === 1) {
+          window.addEventListener("scroll", this.handleScroll);
+        }
+    }
+
+    componentWillUnmount() {
+      if(this.props.width === 1) {
+        window.removeEventListener("scroll", this.handleScroll);
+      }
     }
 
     componentWillReceiveProps(nextProps) {
@@ -95,12 +106,29 @@ export class List extends Component {
         return query;
     }
 
+    handleScroll = () => {
+      const windowHeight = "innerHeight" in window ? window.innerHeight : document.documentElement.offsetHeight;
+      const body = document.body;
+      const html = document.documentElement;
+      const docHeight = Math.max(body.scrollHeight, body.offsetHeight, html.clientHeight,  html.scrollHeight, html.offsetHeight);
+      const windowBottom = windowHeight + window.pageYOffset;
+      if (windowBottom >= docHeight) {
+        const params = this.getQuery();
+        const { page, perPage } = params;
+        const nextPage = parseInt(page, 10) + 1;
+        if(Math.ceil(this.props.total / perPage) >= nextPage) {
+          this.setPage(nextPage);
+        }
+      }
+    }
+
     updateData(query) {
         const params = query || this.getQuery();
         const { sort, order, page, perPage, filter } = params;
         const pagination = {
             page: parseInt(page, 10),
             perPage: parseInt(perPage, 10),
+            infinit: this.props.width === 1,
         };
         const permanentFilter = this.props.filter;
         this.props.crudGetList(
@@ -172,6 +200,7 @@ export class List extends Component {
             translate,
             theme,
             version,
+            width,
         } = this.props;
         const query = this.getQuery();
         const filterValues = query.filter;
@@ -188,9 +217,11 @@ export class List extends Component {
             <Title title={title} defaultTitle={defaultTitle} />
         );
 
+        const cartStyle =  width === 1 ? { opacity: isLoading ? 0.8 : 1,  boxShadow: 'none' } :  { opacity: isLoading ? 0.8 : 1};
+
         return (
             <div className="list-page">
-                <Card style={{ opacity: isLoading ? 0.8 : 1 }}>
+                <Card style={cartStyle} >
                   <ListHead
                     title={titleElement}
                     actions={actions}
@@ -222,7 +253,7 @@ export class List extends Component {
                                     isLoading,
                                     setSort: this.setSort,
                                 })}
-                            {pagination &&
+                            {pagination && width > 1 &&
                                 React.cloneElement(pagination, {
                                     total,
                                     page: parseInt(query.page, 10),
@@ -274,6 +305,7 @@ List.propTypes = {
     translate: PropTypes.func.isRequired,
     theme: PropTypes.object.isRequired,
     version: PropTypes.number.isRequired,
+    width: PropTypes.number,
 };
 
 List.defaultProps = {
@@ -318,6 +350,7 @@ const enhance = compose(
         refreshView: refreshViewAction,
     }),
     translate,
+    withWidth(),
     withPermissionsFilteredChildren
 );
 
