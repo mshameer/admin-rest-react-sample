@@ -13,6 +13,7 @@ import { TeamList, TeamEdit, TeamCreate } from './campaigns/teams';
 import { RestClient, AuthClient } from './utils/firebase-client';
 import appReducers from './reducers';
 import appSagas from './sagas';
+import routes from './routes';
 import Login from './auth/Login';
 import Menu from './mui/layout/menu';
 import AppLayout from './mui/layout/appLayout.js';
@@ -30,6 +31,7 @@ const App = () => (
       title="Souhrda Hastham"
       customReducers={{ ...appReducers }}
       customSagas={[ ...appSagas ]}
+      customRoutes={routes}
     >
       <Resource name="users" list={UserList} edit={UserEdit} create={UserCreate} remove={Delete} />
       <Resource name="districts" list={DistrictList} edit={DistrictEdit} create={DistrictCreate} remove={Delete} />
