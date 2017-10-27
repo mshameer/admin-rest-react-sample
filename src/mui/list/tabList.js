@@ -3,6 +3,8 @@ import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
 import { parse, stringify } from 'query-string';
 import { push as pushAction } from 'react-router-redux';
+import autoprefixer from 'material-ui/utils/autoprefixer';
+import getMuiTheme from 'material-ui/styles/getMuiTheme';
 import { Card, CardText } from 'material-ui/Card';
 import compose from 'recompose/compose';
 import { createSelector } from 'reselect';
@@ -29,6 +31,10 @@ import withPermissionsFilteredChildren from 'admin-on-rest/lib/auth/withPermissi
 
 const styles = {
   noResults: { padding: 20 },
+  header: {
+      display: 'flex',
+      justifyContent: 'space-between',
+  },
 };
 
 export class List extends Component {
@@ -135,7 +141,7 @@ export class List extends Component {
             this.props.resource,
             pagination,
             { field: sort, order },
-            { ...filter, ...permanentFilter }
+            { ...filter, ...permanentFilter }, false
         );
     }
 
@@ -202,9 +208,12 @@ export class List extends Component {
             version,
             width,
         } = this.props;
+
         const query = this.getQuery();
         const filterValues = query.filter;
         const basePath = this.getBasePath();
+        const muiTheme = getMuiTheme(theme);
+        const prefix = autoprefixer(muiTheme);
 
         const resourceName = translate(`resources.${resource}.name`, {
             smart_count: 2,
@@ -222,22 +231,29 @@ export class List extends Component {
         return (
             <div className="list-page">
                 <Card style={cartStyle} >
-                  <ListHead
-                    title={titleElement}
-                    actions={actions}
-                    resource={resource}
-                    filters={filters}
-                    filterValues={filterValues}
-                    basePath={basePath}
-                    hasCreate={hasCreate}
-                    displayedFilters={this.state}
-                    showFilter={this.showFilter}
-                    theme={theme}
-                    refresh={this.refresh}
-
-                    hideFilter={this.hideFilter}
-                    setFilters={this.setFilters}
-                  />
+                  <div style={prefix(styles.header)}>
+                      {actions &&
+                          React.cloneElement(actions, {
+                              resource,
+                              filters,
+                              filterValues,
+                              basePath,
+                              hasCreate,
+                              displayedFilters: this.state,
+                              showFilter: this.showFilter,
+                              theme,
+                              refresh: this.refresh,
+                          })}
+                  </div>
+                  {filters && width !== 1 &&
+                    React.cloneElement(filters, {
+                        resource,
+                        hideFilter: this.hideFilter,
+                        filterValues,
+                        displayedFilters: this.state,
+                        setFilters: this.setFilters,
+                        context:'form'
+                    })}
                     {isLoading || total > 0 ? (
                         <div key={version}>
                             {children &&

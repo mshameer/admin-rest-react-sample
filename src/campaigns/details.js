@@ -6,6 +6,7 @@ import Actors from 'material-ui/svg-icons/av/recent-actors';
 import SimpleList from '../mui/list/simpleList'
 import Avatar from 'material-ui/Avatar';
 import Carousel from 'material-ui/svg-icons/action/view-carousel';
+import Update from 'material-ui/svg-icons/action/update';
 import Restricted from 'admin-on-rest/lib/auth/Restricted';
 import TabbedList from '../mui/list/tabbedList';
 import TabList from '../mui/list/tabList';
@@ -108,12 +109,36 @@ const CampaignDetails = (props) => (
         }
         />
     </TabList>
+    <TabList resource="schedule" title="Schedule">
+      <Responsive
+        small={
+          <SimpleList leftAvatar={record => <Avatar icon={<Update />} />} >
+            <ReferenceField label="Campaign" source="campaignId" reference="campaigns" type="primary" linkType="none" >
+              <TextField source="title" />
+            </ReferenceField>
+            <ReferenceField label="Team" source="teamId" reference="teams" type="secondary" linkType="none" >
+              <TextField source="name" />
+            </ReferenceField>
+          </SimpleList>
+        }
+        medium={
+          <Datagrid>
+            <ReferenceField label="Campaign" source="campaignId" reference="campaigns" >
+              <TextField source="title" />
+            </ReferenceField>
+            <ReferenceField label="Team" source="teamId" reference="teams" >
+              <TextField source="name" />
+            </ReferenceField>
+            <EditButton />
+          </Datagrid>
+        }
+        />
+    </TabList>
   </TabbedList>
 )
 
 const restrictPage = (component, route) => {
   const commonProps = {
-      resource: 'guests',
       hasList: false,
       hasEdit: false,
       hasShow: false,
@@ -122,7 +147,7 @@ const restrictPage = (component, route) => {
   };
 
     const RestrictedPage = routeProps => (
-        <Restricted authParams={{ resource: 'guests', route }} {...routeProps}>
+        <Restricted authParams={{ route }} {...routeProps}>
             {createElement(component, {
                 ...commonProps,
                 ...routeProps,
