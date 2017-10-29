@@ -36,6 +36,7 @@ class SimpleList extends Component {
         leftIcon,
         rightAvatar,
         rightIcon,
+        backTo,
       } = this.props;
 
       return (
@@ -70,7 +71,7 @@ class SimpleList extends Component {
                     leftIcon={leftIcon && leftIcon(data[id], id)}
                     rightAvatar={rightAvatar && rightAvatar(data[id], id)}
                     rightIcon={rightIcon && rightIcon(data[id], id)}
-                    containerElement={<Link to={`${basePath}/${id}`} />}
+                    containerElement={<Link to={`${basePath}/${id}?backTo=${backTo}`} />}
                 />,
               ids.length - 1 > index && <Divider inset={true} key={`${id}-devider`} />]
             )})}

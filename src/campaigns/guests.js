@@ -1,11 +1,14 @@
 import React from 'react';
-import { Edit, Create, Datagrid, TextField, Responsive, TabbedForm, ReferenceField,
+import { Datagrid, TextField, Responsive, ReferenceField,
   EditButton, SelectInput, TextInput, FormTab, CheckboxGroupInput, ReferenceInput, AutocompleteInput, SelectField  } from 'admin-on-rest';
 import SimpleList from '../mui/list/simpleList'
 import List from '../mui/list';
+import Create from '../mui/detail/create';
+import Edit from '../mui/detail/edit';
 import Avatar from 'material-ui/Avatar';
 import Actors from 'material-ui/svg-icons/av/recent-actors';
 import { getCurrentUser} from '../utils/permissions';
+import TabbedForm from '../mui/form/tabbedForm';
 
 const campaignStatus = [
   { id: 'notStarted', name: 'Not Started' },
@@ -75,7 +78,7 @@ export const GuestList = (props) => (
           <ReferenceField label="Referred by" source="referredBy" reference="users" >
             <TextField source="displayName" />
           </ReferenceField>
-          <SelectField source="status" choices={campaignStatus}  />
+          <SelectField source="status" choices={campaignStatus} />
           <EditButton />
         </Datagrid>
       }
@@ -87,73 +90,55 @@ const GuestTitle = ({ record }) => {
   return <span>Guest {record ? `"${record.name}"` : ''}</span>;
   };
 
-  const validateGuestForm = (values) => {
-    const errors = {};
-    if (!values.title) {
-      errors.title = ['Guest title is required'];
-    }
+const validateGuestForm = (values) => {
+  const errors = {};
+  if (!values.title) {
+    errors.title = ['Guest title is required'];
+  }
 
-    return errors
-  };
-
-  export const GuestEdit = (props) => (
-    <Edit title={<GuestTitle />} {...props}>
-      <TabbedForm validate={validateGuestForm} >
-        <FormTab label="Guest" >
-          <TextInput source="name" />
-          <TextInput source="phoneNo" label="Phone No"/>
-          <TextInput source="address" />
-          <AutocompleteInput source="place" choices={placeChoices} optionText="name" optionValue="id" label="Place to identify" filter={autoCompleteFilter} />
-          <TextInput source="age" />
-          <ReferenceInput label="Member Referred by" source="referredBy" reference="users" filter={{ unitId: currentUser.unitId }} allowEmpty >
-            <SelectInput optionText="displayName" />
-          </ReferenceInput>
-          <SelectInput source="occupation" choices={occupationChoices} />
-        </FormTab>
-        <FormTab label="Family">
-          <TextInput source="details" label="Details" />
-          <TextInput source="other" label="Other Reference" />
-        </FormTab>
-        <FormTab label="FeedBack">
-          <CheckboxGroupInput source="actions" choices={actionChoices} optionText="name" optionValue="id" />
-          <CheckboxGroupInput source="responses" choices={responseChoices} optionText="name" optionValue="id" />
-          <SelectInput source="nextAction"  label="Next Action" choices={nextActionChoices} />
-          <TextInput source="notes" label="Notes if any" />
-          <SelectInput source="status" choices={campaignStatus} defaultValue="completed"  />
-        </FormTab>
-      </TabbedForm>
-    </Edit>
-  );
+  return errors
+};
 
 const autoCompleteFilter = (searchText, key) => {
   return searchText && key.toLowerCase().indexOf(searchText.toLowerCase()) !== -1;
 };
 
-  export const GuestCreate = (props) => (
-    <Create {...props}>
-      <TabbedForm validate={validateGuestForm} >
-        <FormTab label="Guest" >
-          <TextInput source="name" />
-          <TextInput source="phoneNo" label="Phone No"/>
-          <TextInput source="address" />
-          <AutocompleteInput source="place" choices={placeChoices} optionText="name" optionValue="id" label="Place to identify" filter={autoCompleteFilter} />
-          <TextInput source="age" />
-          <ReferenceInput label="Member Referred by" source="referredBy" reference="users" filter={{ unitId: currentUser.unitId }} allowEmpty >
-            <SelectInput optionText="displayName" />
-          </ReferenceInput>
-          <SelectInput source="occupation" choices={occupationChoices} />
-          <SelectInput source="status" choices={campaignStatus} defaultValue="notStarted" style={{ display: 'none'}} />
-        </FormTab>
-        <FormTab label="Family">
-          <TextInput source="details" label="Details" />
-          <TextInput source="other" label="Other Reference" />
-        </FormTab>
-        <FormTab label="FeedBack">
-          <CheckboxGroupInput source="actions" choices={actionChoices} optionText="name" optionValue="id" />
-          <CheckboxGroupInput source="responses" choices={responseChoices} optionText="name" optionValue="id" />
-          <SelectInput source="nextAction"  label="Next Action" choices={nextActionChoices} />
-          <TextInput source="notes" label="Notes if any" />
-        </FormTab>
-      </TabbedForm>
-    </Create>
-  );
+const getGuestForm = () => (
+  <TabbedForm validate={validateGuestForm} >
+    <FormTab label="Guest" >
+      <TextInput source="name"  options={{ fullWidth: true }} />
+      <TextInput source="phoneNo" label="Phone No" options={{ fullWidth: true }}/>
+      <TextInput source="address" options={{ fullWidth: true }} />
+      <AutocompleteInput source="place" choices={placeChoices}
+        optionText="name" optionValue="id" label="Place to identify" filter={autoCompleteFilter} options={{ fullWidth: true }} />
+      <TextInput source="age"  options={{ fullWidth: true }} />
+      <ReferenceInput label="Member Referred by" source="referredBy" reference="users" filter={{ unitId: currentUser.unitId }} allowEmpty >
+        <SelectInput optionText="displayName"  options={{ fullWidth: true }}/>
+      </ReferenceInput>
+      <SelectInput source="occupation" choices={occupationChoices} options={{ fullWidth: true }} />
+    </FormTab>
+    <FormTab label="Family">
+      <TextInput source="details" label="Details" />
+      <TextInput source="other" label="Other Reference" />
+    </FormTab>
+    <FormTab label="FeedBack">
+      <CheckboxGroupInput source="actions" choices={actionChoices} optionText="name" optionValue="id" />
+      <CheckboxGroupInput source="responses" choices={responseChoices} optionText="name" optionValue="id" />
+      <SelectInput source="nextAction"  label="Next Action" choices={nextActionChoices} />
+      <TextInput source="notes" label="Notes if any" />
+      <SelectInput source="status" choices={campaignStatus} defaultValue="completed"  />
+    </FormTab>
+  </TabbedForm>
+)
+
+export const GuestEdit = (props) => (
+  <Edit title={<GuestTitle />} {...props}>
+    { getGuestForm() }
+  </Edit>
+);
+
+export const GuestCreate = (props) => (
+  <Create {...props}>
+    { getGuestForm() }
+  </Create>
+);

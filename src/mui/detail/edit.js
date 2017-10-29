@@ -107,12 +107,16 @@ export class Edit extends Component {
             ''
         );
 
+        const urlParams = new URLSearchParams(this.props.location.search);
+        const backTo = urlParams.get('backTo');
+
         return (
             <div className="edit-page">
                 <Card style={{ opacity: isLoading ? 0.8 : 1, boxShadow: 'none', paddingBottom: 75  }}>
                     <EditHead
                       actions={actions}
                       basePath={basePath}
+                      backTo={backTo}
                       data={data}
                       hasDelete={hasDelete}
                       hasShow={hasShow}

@@ -56,8 +56,8 @@ const nextActionChoices = [
 ];
 
 const CampaignDetails = (props) => (
-  <TabbedList {...props} >
-    <TabList resource="guests" title="Guests">
+  <TabbedList {...props}  title="Campaign">
+    <TabList resource="guests" title="Guests" basePath="guests">
       <Responsive
         small={
           <SimpleList
@@ -84,7 +84,7 @@ const CampaignDetails = (props) => (
         }
         />
     </TabList>
-    <TabList resource="teams" title="Teams">
+    <TabList resource="teams" title="Teams" basePath="teams">
       <Responsive
         small={
           <SimpleList leftAvatar={record => <Avatar icon={<Carousel />} />} secondaryStyle={{height: 35}} >
@@ -109,7 +109,7 @@ const CampaignDetails = (props) => (
         }
         />
     </TabList>
-    <TabList resource="schedule" title="Schedule">
+    <TabList resource="schedule" title="Schedule" basePath="schedule">
       <Responsive
         small={
           <SimpleList leftAvatar={record => <Avatar icon={<Update />} />} >
@@ -139,11 +139,11 @@ const CampaignDetails = (props) => (
 
 const restrictPage = (component, route) => {
   const commonProps = {
-      hasList: false,
-      hasEdit: false,
-      hasShow: false,
-      hasCreate: false,
-      hasDelete: false,
+      hasList: true,
+      hasEdit: true,
+      hasShow: true,
+      hasCreate: true,
+      hasDelete: true,
   };
 
     const RestrictedPage = routeProps => (

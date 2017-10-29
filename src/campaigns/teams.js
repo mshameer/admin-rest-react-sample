@@ -1,8 +1,10 @@
 import React from 'react';
-import { Edit, Create, Datagrid, TextField, Responsive, SelectArrayInput, ReferenceArrayInput, ReferenceArrayField,
+import { Datagrid, TextField, Responsive, SelectArrayInput, ReferenceArrayInput, ReferenceArrayField,
   EditButton, ChipField, SingleFieldList, SimpleForm, TextInput } from 'admin-on-rest';
 import SimpleList from '../mui/list/simpleList'
 import List from '../mui/list';
+import Create from '../mui/detail/create';
+import Edit from '../mui/detail/edit';
 import Avatar from 'material-ui/Avatar';
 import Carousel from 'material-ui/svg-icons/action/view-carousel';
 import { getCurrentUser} from '../utils/permissions';
@@ -41,38 +43,37 @@ const TeamTitle = ({ record }) => {
   return <span>Team {record ? `"${record.name}"` : ''}</span>;
   };
 
-  const validateTeamForm = (values) => {
-    const errors = {};
-    const reg = /^\w+([-+.']\w+)*@\w+([-.]\w+)*\.\w+([-.]\w+)*$/
-    if (!values.name) {
-      errors.name = ['Team name is required'];
-    }
-    if (values.email && !reg.test(values.email)){
-      errors.email = ['Invalid email address'];
-    }
+const validateTeamForm = (values) => {
+  const errors = {};
+  if (!values.name) {
+    errors.name = ['Team name is required'];
+  }
+  if (!values.teamMembers) {
+    errors.teamMembers = ['Team members is required'];
+  }
+  return errors
+  return errors
+};
 
-    return errors
-  };
+export const TeamEdit = (props) => (
+  <Edit title={<TeamTitle />} {...props}>
+    <SimpleForm validate={validateTeamForm} >
+      <ReferenceArrayInput source="teamMembers" reference="users" label="Team Members" allowEmpty >
+        <SelectArrayInput optionText="displayName" options={{ fullWidth: true }} />
+      </ReferenceArrayInput>
+      <TextInput label="Team Name" source="name" options={{ fullWidth: true }} />
+    </SimpleForm>
+  </Edit>
+);
 
-  export const TeamEdit = (props) => (
-    <Edit title={<TeamTitle />} {...props}>
-      <SimpleForm validate={validateTeamForm} >
-        <ReferenceArrayInput source="teamMembers" reference="users" label="Team Members" allowEmpty>
-          <SelectArrayInput optionText="displayName" />
-        </ReferenceArrayInput>
-        <TextInput label="Team Name" source="name" />
-      </SimpleForm>
-    </Edit>
-  );
-
-  export const TeamCreate = (props) => (
-    <Create {...props}>
-      <SimpleForm validate={validateTeamForm} >
-        <ReferenceArrayInput source="teamMembers" reference="users"
-            label="Team Members" allowEmpty filter={{unitId: currentUser.unitId}}>
-          <SelectArrayInput optionText="displayName" />
-        </ReferenceArrayInput>
-        <TextInput label="Team Name" source="name" />
-      </SimpleForm>
-    </Create>
-  );
+export const TeamCreate = (props) => (
+  <Create {...props}>
+    <SimpleForm validate={validateTeamForm} >
+      <ReferenceArrayInput source="teamMembers" reference="users"
+          label="Team Members" allowEmpty filter={{unitId: currentUser.unitId}}>
+        <SelectArrayInput optionText="displayName" options={{ fullWidth: true }} />
+      </ReferenceArrayInput>
+      <TextInput label="Team Name" source="name"  options={{ fullWidth: true }}/>
+    </SimpleForm>
+  </Create>
+);

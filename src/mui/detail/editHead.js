@@ -20,12 +20,13 @@ class EditHead extends Component {
       data,
       hasDelete,
       hasShow,
+      backTo,
     } = this.props;
 
     const viewTitle =  width === 1
       ? <AppBarMobile
           title={backTitle}
-          titleLink={basePath}
+          titleLink={backTo || basePath}
           leftMenu={[
             <MenuItem primaryText="Refresh" type="refresh" />,
             <MenuItem primaryText="Delete" containerElement={

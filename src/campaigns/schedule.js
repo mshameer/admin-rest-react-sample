@@ -1,8 +1,11 @@
 import React from 'react';
-import { Edit, Create, Datagrid, ReferenceField, TextField, Responsive, FormTab, CheckboxGroupInput, TabbedForm,
+import { Datagrid, ReferenceField, TextField, Responsive, FormTab, CheckboxGroupInput,
   EditButton, ReferenceInput, SelectInput } from 'admin-on-rest';
 import SimpleList from '../mui/list/simpleList'
 import List from '../mui/list';
+import Create from '../mui/detail/create';
+import TabbedForm from '../mui/form/tabbedForm';
+import Edit from '../mui/detail/edit';
 import Avatar from 'material-ui/Avatar';
 import Update from 'material-ui/svg-icons/action/update';
 
@@ -42,42 +45,32 @@ export const ScheduleList = (props) => (
     return errors
   };
 
+  const getScheduleForm = () => (
+    <TabbedForm validate={validateScheduleForm} >
+      <FormTab label="Schedule" >
+        <ReferenceInput label="Campaign" source="campaignId" reference="campaigns" allowEmpty >
+          <SelectInput optionText="title" options={{ fullWidth: true }} />
+        </ReferenceInput>
+        <ReferenceInput label="Team" source="teamId" reference="teams" allowEmpty >
+          <SelectInput optionText="name"  options={{ fullWidth: true }} />
+        </ReferenceInput>
+      </FormTab>
+      <FormTab label="Guests">
+        <ReferenceInput label="Guests to visit" source="guestIds" reference="guests" allowEmpty >
+          <CheckboxGroupInput source="name"  optionText="name"  options={{ fullWidth: true }}   />
+        </ReferenceInput>
+      </FormTab>
+    </TabbedForm>
+  )
+
   export const ScheduleEdit = (props) => (
     <Edit title="Edit Schedule" {...props}>
-      <TabbedForm validate={validateScheduleForm} >
-        <FormTab label="Schedule" >
-          <ReferenceInput label="Campaign" source="campaignId" reference="campaigns" allowEmpty >
-            <SelectInput optionText="title" />
-          </ReferenceInput>
-          <ReferenceInput label="Team" source="teamId" reference="teams" allowEmpty >
-            <SelectInput optionText="name" />
-          </ReferenceInput>
-        </FormTab>
-        <FormTab label="Guests">
-          <ReferenceInput label="Guests to visit" source="guestIds" reference="guests" allowEmpty >
-            <CheckboxGroupInput source="name"  optionText="name"  />
-          </ReferenceInput>
-        </FormTab>
-      </TabbedForm>
+      { getScheduleForm() }
     </Edit>
   );
 
   export const ScheduleCreate = (props) => (
     <Create {...props}>
-      <TabbedForm validate={validateScheduleForm} >
-        <FormTab label="Schedule" >
-          <ReferenceInput label="Campaign" source="campaignId" reference="campaigns" allowEmpty >
-            <SelectInput optionText="title" />
-          </ReferenceInput>
-          <ReferenceInput label="Team" source="teamId" reference="teams" allowEmpty >
-            <SelectInput optionText="name" />
-          </ReferenceInput>
-        </FormTab>
-        <FormTab label="Guests">
-          <ReferenceInput label="Guests to visit" source="guestIds" reference="guests" allowEmpty >
-            <CheckboxGroupInput source="name"  optionText="name"  />
-          </ReferenceInput>
-        </FormTab>
-      </TabbedForm>
+      { getScheduleForm() }
     </Create>
   );

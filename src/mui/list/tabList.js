@@ -88,7 +88,7 @@ export class List extends Component {
     }
 
     getBasePath() {
-        return this.props.location.pathname.replace(/\/$/, '');
+        return this.props.basePath || this.props.location.pathname.replace(/\/$/, '');
     }
 
     /**
@@ -207,6 +207,7 @@ export class List extends Component {
             theme,
             version,
             width,
+            backTo,
         } = this.props;
 
         const query = this.getQuery();
@@ -225,19 +226,18 @@ export class List extends Component {
         const titleElement = (
             <Title title={title} defaultTitle={defaultTitle} />
         );
-
         const cartStyle =  width === 1 ? { opacity: isLoading ? 0.8 : 1,  boxShadow: 'none' } :  { opacity: isLoading ? 0.8 : 1};
 
         return (
             <div className="list-page">
                 <Card style={cartStyle} >
                   <div style={prefix(styles.header)}>
-                      {actions &&
+                      {actions && width !== 1 &&
                           React.cloneElement(actions, {
                               resource,
                               filters,
                               filterValues,
-                              basePath,
+                              basePath: basePath,
                               hasCreate,
                               displayedFilters: this.state,
                               showFilter: this.showFilter,
@@ -266,6 +266,7 @@ export class List extends Component {
                                         order: query.order,
                                     },
                                     basePath,
+                                    backTo,
                                     isLoading,
                                     setSort: this.setSort,
                                 })}
@@ -312,6 +313,7 @@ List.propTypes = {
     isLoading: PropTypes.bool.isRequired,
     location: PropTypes.object.isRequired,
     path: PropTypes.string,
+    basePath: PropTypes.string,
     params: PropTypes.object.isRequired,
     push: PropTypes.func.isRequired,
     query: PropTypes.object.isRequired,
@@ -322,6 +324,7 @@ List.propTypes = {
     theme: PropTypes.object.isRequired,
     version: PropTypes.number.isRequired,
     width: PropTypes.number,
+    backTo: PropTypes.string,
 };
 
 List.defaultProps = {

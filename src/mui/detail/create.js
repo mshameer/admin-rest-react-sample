@@ -62,6 +62,9 @@ class Create extends Component {
             <Title title={title} defaultTitle={defaultTitle} />
         );
 
+        const urlParams = new URLSearchParams(this.props.location.search);
+        const backTo = urlParams.get('backTo');
+
         return (
             <div className="create-page">
                 <Card style={{ opacity: isLoading ? 0.8 : 1, boxShadow: 'none', paddingBottom: 75 }}>
@@ -70,7 +73,7 @@ class Create extends Component {
                       hasList={hasList}
                       title={titleElement}
                       backTitle={backTitle || resource}
-                      basePath={basePath}
+                      basePath={backTo || basePath}
                     />
                     {React.cloneElement(children, {
                         save: this.save,

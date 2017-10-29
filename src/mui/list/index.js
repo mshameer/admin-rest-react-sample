@@ -171,6 +171,7 @@ export class List extends Component {
                 filter: JSON.stringify(newParams.filter),
             })}`,
         });
+        console.log(this.props);
         this.props.changeListParams(this.props.resource, newParams);
     }
 
