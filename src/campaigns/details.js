@@ -1,7 +1,7 @@
 import React, { createElement } from 'react';
 import { Route, Switch } from 'react-router-dom';
 import { Datagrid, TextField, Responsive, ReferenceArrayField, ReferenceField,
-  EditButton, ChipField, SingleFieldList, SimpleForm, SelectField } from 'admin-on-rest';
+  EditButton, ChipField, SingleFieldList, SelectField } from 'admin-on-rest';
 import Actors from 'material-ui/svg-icons/av/recent-actors';
 import SimpleList from '../mui/list/simpleList'
 import Avatar from 'material-ui/Avatar';
@@ -17,38 +17,12 @@ const campaignStatus = [
   { id: 'completed', name: 'Completed' },
 ];
 
-const actionChoices = [
-  { id: '1', name: 'Peace Radio Installation' },
-  { id: '2', name: 'Nerpadham Indroduced' },
-  { id: '3', name: 'Jeevitham Enthinu Vendi' },
-  { id: '4', name: 'Kathorkkuka Srushttavinuvendi' },
-  { id: '5', name: 'Quran Class Invited' },
-]
-
 const placeChoices = [
   { id: 1, name: 'Karikode' },
   { id: 2, name: 'Chanthanathuthope' },
   { id: 3, name: 'Mamoodu' },
   { id: 4, name: 'Kadappakkada' },
   { id: 5, name: 'Kadamukku' },
-];
-
-const occupationChoices = [
-  { id: 0, name: 'Driver' },
-  { id: 1, name: 'Teacher' },
-  { id: 2, name: 'Professor' },
-  { id: 3, name: 'Gov. Employee' },
-  { id: 4, name: 'Doctor' },
-  { id: 5, name: 'Engineer' },
-];
-
-const responseChoices = [
-  { id: 0, name: 'More materials Needed' },
-  { id: 1, name: 'Nerpadham Subscription' },
-  { id: 2, name: 'Interested in Dawa Activities' },
-  { id: 3, name: 'Counselling Needed' },
-  { id: 4, name: 'Quran copy Needed' },
-  { id: 5, name: 'Help/Aid Needed' },
 ];
 
 const nextActionChoices = [

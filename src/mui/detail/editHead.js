@@ -21,7 +21,10 @@ class EditHead extends Component {
       hasDelete,
       hasShow,
       backTo,
+      tab,
     } = this.props;
+
+    const deleteLink = backTo ? `${linkToRecord(basePath, data.id)}/delete?backTo=${backTo}` : `${linkToRecord(basePath, data.id)}/delete`;
 
     const viewTitle =  width === 1
       ? <AppBarMobile
@@ -30,9 +33,10 @@ class EditHead extends Component {
           leftMenu={[
             <MenuItem primaryText="Refresh" type="refresh" />,
             <MenuItem primaryText="Delete" containerElement={
-              <Link to={`${linkToRecord(basePath, data.id)}/delete`} />
+              <Link to={deleteLink} />
             } />
           ]}
+          tab={tab}
         />
       : <CardTitle title={title} className="title" />;
 

@@ -1,5 +1,5 @@
 import React from 'react';
-import { Admin, Resource, Delete } from 'admin-on-rest';
+import { Admin, Resource } from 'admin-on-rest';
 
 import { DistrictList, DistrictEdit, DistrictCreate } from './admin/districts';
 import { ZoneList, ZoneEdit, ZoneCreate } from './admin/zones';
@@ -11,6 +11,7 @@ import { GuestList, GuestEdit, GuestCreate } from './campaigns/guests';
 import { ScheduleList, ScheduleEdit, ScheduleCreate } from './campaigns/schedule';
 import { TeamList, TeamEdit, TeamCreate } from './campaigns/teams';
 import { RestClient, AuthClient } from './utils/firebase-client';
+import Delete from './mui/detail/delete';
 import appReducers from './reducers';
 import appSagas from './sagas';
 import routes from './routes';

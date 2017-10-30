@@ -8,15 +8,12 @@ import getMuiTheme from 'material-ui/styles/getMuiTheme';
 import { Card, CardText } from 'material-ui/Card';
 import compose from 'recompose/compose';
 import { createSelector } from 'reselect';
-import inflection from 'inflection';
 import queryReducer, {
     SET_SORT,
     SET_PAGE,
     SET_FILTER,
     SORT_DESC,
 } from 'admin-on-rest/lib/reducer/admin/resource/list/queryReducer';
-import ListHead from './listHead';
-import Title from 'admin-on-rest/lib/mui/layout/Title';
 import DefaultPagination from 'admin-on-rest/lib/mui/list/Pagination';
 import withWidth from 'material-ui/utils/withWidth';
 
@@ -198,7 +195,6 @@ export class List extends Component {
             actions = <DefaultActions />,
             resource,
             hasCreate,
-            title,
             data,
             ids,
             total,
@@ -216,16 +212,6 @@ export class List extends Component {
         const muiTheme = getMuiTheme(theme);
         const prefix = autoprefixer(muiTheme);
 
-        const resourceName = translate(`resources.${resource}.name`, {
-            smart_count: 2,
-            _: inflection.humanize(inflection.pluralize(resource)),
-        });
-        const defaultTitle = translate('aor.page.list', {
-            name: `${resourceName}`,
-        });
-        const titleElement = (
-            <Title title={title} defaultTitle={defaultTitle} />
-        );
         const cartStyle =  width === 1 ? { opacity: isLoading ? 0.8 : 1,  boxShadow: 'none' } :  { opacity: isLoading ? 0.8 : 1};
 
         return (
@@ -255,7 +241,7 @@ export class List extends Component {
                         context:'form'
                     })}
                     {isLoading || total > 0 ? (
-                        <div key={version}>
+                        <div key={version} >
                             {children &&
                                 React.cloneElement(children, {
                                     resource,

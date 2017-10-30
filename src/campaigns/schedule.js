@@ -57,20 +57,20 @@ export const ScheduleList = (props) => (
       </FormTab>
       <FormTab label="Guests">
         <ReferenceInput label="Guests to visit" source="guestIds" reference="guests" allowEmpty >
-          <CheckboxGroupInput source="name"  optionText="name"  options={{ fullWidth: true }}   />
+          <CheckboxGroupInput source="name"  optionText="name"  />
         </ReferenceInput>
       </FormTab>
     </TabbedForm>
   )
 
   export const ScheduleEdit = (props) => (
-    <Edit title="Edit Schedule" {...props}>
+    <Edit title="Edit Schedule" {...props} tab >
       { getScheduleForm() }
     </Edit>
   );
 
   export const ScheduleCreate = (props) => (
-    <Create {...props}>
+    <Create {...props} tab >
       { getScheduleForm() }
     </Create>
   );

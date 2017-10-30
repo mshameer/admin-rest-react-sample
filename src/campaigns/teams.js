@@ -52,7 +52,6 @@ const validateTeamForm = (values) => {
     errors.teamMembers = ['Team members is required'];
   }
   return errors
-  return errors
 };
 
 export const TeamEdit = (props) => (

@@ -4,7 +4,6 @@ import { connect } from 'react-redux';
 import { Card, CardText } from 'material-ui/Card';
 import compose from 'recompose/compose';
 import inflection from 'inflection';
-import ViewTitle from 'admin-on-rest/lib/mui/layout/ViewTitle';
 import Title from 'admin-on-rest/lib/mui/layout/Title';
 import {
     crudGetOne as crudGetOneAction,
@@ -86,6 +85,7 @@ export class Edit extends Component {
             title,
             translate,
             backTitle,
+            tab,
         } = this.props;
 
         if (!children) return null;
@@ -116,14 +116,15 @@ export class Edit extends Component {
                     <EditHead
                       actions={actions}
                       basePath={basePath}
-                      backTo={backTo}
                       data={data}
                       hasDelete={hasDelete}
                       hasShow={hasShow}
                       hasList={hasList}
+                      backTo={backTo}
                       resource={resource}
                       title={titleElement}
                       backTitle={backTitle || resource}
+                      tab={tab}
                      />
                     {data &&
                         React.cloneElement(children, {
@@ -162,6 +163,7 @@ Edit.propTypes = {
     translate: PropTypes.func,
     version: PropTypes.number.isRequired,
     backTitle: PropTypes.string,
+    tab: PropTypes.bool,
 };
 
 function mapStateToProps(state, props) {

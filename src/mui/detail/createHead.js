@@ -14,10 +14,11 @@ class CreateHead extends Component {
       hasList,
       width,
       backTitle,
+      tab,
     } = this.props;
 
     const viewTitle =  width === 1
-      ? <AppBarMobile title={backTitle} titleLink={basePath} />
+      ? <AppBarMobile title={backTitle} titleLink={basePath} tab={tab} />
       : <CardTitle title={title} className="title" />;
 
     return (

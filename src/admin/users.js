@@ -118,7 +118,7 @@ const validateUserForm = (values) => {
   if (!values.displayName) {
     errors.displayName = ['Name is required'];
   }
-  if (!values.phoneNumber || mob.test(values.phoneNumber) == false ) {
+  if (!values.phoneNumber || mob.test(values.phoneNumber) === false ) {
     errors.phoneNumber = ['Valid Mobile No required'];
   }
   if (values.id && !values.password) {

@@ -71,7 +71,7 @@ class AppBarMobile extends Component {
     };
 
     render() {
-        const { title, leftMenu, tools, titleLink } = this.props;
+        const { title, leftMenu, tools, titleLink, tab } = this.props;
         const menuItems = leftMenu && leftMenu.map((item, key) => {
           const itemProps = { key };
           if(item.props.type === 'refresh') {
@@ -111,10 +111,12 @@ class AppBarMobile extends Component {
               iconStyleLeft: styles.iconLeft,
               onLeftIconButtonTouchTap: this.handleLeftIconButtonTouchTap,
             };
+          const style = tab ? { boxShadow: 'none' }
+            : { boxShadow: 'rgba(0, 0, 0, 0.35) 0px 1px 6px, rgba(0, 0, 0, 0) 0px 1px 4px',  position: 'fixed' }
         return (
             <MuiAppBar
                 { ...appBarProps }
-                style={styles.bar}
+                style={Object.assign({}, styles.bar, style)}
                 iconStyleRight={styles.iconRight}
                 iconElementRight={rightSideTools}
             />
@@ -129,6 +131,7 @@ AppBarMobile.propTypes = {
     leftMenu: PropTypes.arrayOf(PropTypes.element),
     tools: PropTypes.arrayOf(PropTypes.element),
     titleLink: PropTypes.string,
+    tab: PropTypes.bool,
 };
 
 const enhance = compose(

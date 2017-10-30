@@ -46,6 +46,7 @@ class Create extends Component {
             backTitle,
             translate,
             hasList,
+            tab,
         } = this.props;
 
         if (!children) return null;
@@ -74,6 +75,7 @@ class Create extends Component {
                       title={titleElement}
                       backTitle={backTitle || resource}
                       basePath={backTo || basePath}
+                      tab={tab}
                     />
                     {React.cloneElement(children, {
                         save: this.save,
@@ -102,6 +104,7 @@ Create.propTypes = {
     title: PropTypes.any,
     translate: PropTypes.func.isRequired,
     hasList: PropTypes.bool,
+    tab: PropTypes.bool,
 };
 
 Create.defaultProps = {

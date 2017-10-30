@@ -132,13 +132,13 @@ const getGuestForm = () => (
 )
 
 export const GuestEdit = (props) => (
-  <Edit title={<GuestTitle />} {...props}>
+  <Edit title={<GuestTitle />} {...props} tab >
     { getGuestForm() }
   </Edit>
 );
 
 export const GuestCreate = (props) => (
-  <Create {...props}>
+  <Create {...props} tab >
     { getGuestForm() }
   </Create>
 );

@@ -13,7 +13,7 @@ import Carousel from 'material-ui/svg-icons/action/view-carousel';
 import {spacing, typography} from 'material-ui/styles';
 import {white, blue600} from 'material-ui/styles/colors';
 import Avatar from 'material-ui/Avatar';
-import { getCurrentUser, WithPermission, STATE_LEVEL_PERMISSION } from '../../utils/permissions';
+import { getCurrentUser, WithPermission, STATE_LEVEL_PERMISSION, ZONE_LEVEL_PERMISSION } from '../../utils/permissions';
 
 import MenuItem from './menuItem';
 
@@ -61,17 +61,20 @@ export default ({ resources, onMenuTap, logout }) => (
     </div>
     <List>
       <MenuItem primaryText="Members"  to="/users" onClick={onMenuTap} leftIcon={<People />} />
-      <MenuItem
-         primaryText="Campaigns"
-         leftIcon={<Weekend />}
-         primaryTogglesNestedList={true}
-         nestedItems={[
-            <MenuItem  key={9} primaryText="Guests"  to="/guests" onClick={onMenuTap} leftIcon={<Actors />} />,
-            <MenuItem  key={10} primaryText="Teams"  to="/teams" onClick={onMenuTap} leftIcon={<Carousel />} />,
-            <MenuItem  key={11} primaryText="Schedule"  to="/schedule" onClick={onMenuTap} leftIcon={<Update />} />,
-            <MenuItem  key={12} primaryText="Campaigns"  to="/campaigns" onClick={onMenuTap} leftIcon={<Weekend />} />
-            ]}
-          />
+      <MenuItem primaryText="Campaigns"  to="/campaigns-details" onClick={onMenuTap} leftIcon={<Weekend />} />
+      <WithPermission type={ZONE_LEVEL_PERMISSION} role={role}>
+        <MenuItem
+           primaryText="Campaigns"
+           leftIcon={<Weekend />}
+           primaryTogglesNestedList={true}
+           nestedItems={[
+              <MenuItem  key={9} primaryText="Guests"  to="/guests" onClick={onMenuTap} leftIcon={<Actors />} />,
+              <MenuItem  key={10} primaryText="Teams"  to="/teams" onClick={onMenuTap} leftIcon={<Carousel />} />,
+              <MenuItem  key={11} primaryText="Schedule"  to="/schedule" onClick={onMenuTap} leftIcon={<Update />} />,
+              <MenuItem  key={12} primaryText="Campaigns"  to="/campaigns" onClick={onMenuTap} leftIcon={<Weekend />} />
+              ]}
+            />
+      </WithPermission>
       <WithPermission type={STATE_LEVEL_PERMISSION} role={role}>
         <MenuItem
            primaryText="Organization"

@@ -46,6 +46,7 @@ class SimpleList extends Component {
               React.Children.map(children, (child) =>{
                 listChildren[child.props.type] = child;
               })
+              const editLink = backTo ? `${basePath}/${id}?backTo=${backTo}` : `${basePath}/${id}`;
               return([
                 <ListItem
                     key={id}
@@ -71,7 +72,7 @@ class SimpleList extends Component {
                     leftIcon={leftIcon && leftIcon(data[id], id)}
                     rightAvatar={rightAvatar && rightAvatar(data[id], id)}
                     rightIcon={rightIcon && rightIcon(data[id], id)}
-                    containerElement={<Link to={`${basePath}/${id}?backTo=${backTo}`} />}
+                    containerElement={<Link to={editLink} />}
                 />,
               ids.length - 1 > index && <Divider inset={true} key={`${id}-devider`} />]
             )})}
