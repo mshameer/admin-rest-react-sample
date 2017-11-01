@@ -127,6 +127,7 @@ const getGuestForm = () => (
       <SelectInput source="nextAction"  label="Next Action" choices={nextActionChoices} />
       <TextInput source="notes" label="Notes if any" />
       <SelectInput source="status" choices={campaignStatus} defaultValue="completed"  />
+      <TextField source="unitId" style={{ display: 'none'}} defaultValue={currentUser.unitId} />
     </FormTab>
   </TabbedForm>
 )

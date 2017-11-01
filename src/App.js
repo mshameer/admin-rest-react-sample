@@ -19,6 +19,7 @@ import Login from './auth/Login';
 import Menu from './mui/layout/menu';
 import AppLayout from './mui/layout/appLayout.js';
 import firebaseConfig from './config/firebase';
+import Details from './campaigns/details';
 
 const trackedResources = ['districts', 'zones', 'units', 'users', 'categories', 'campaigns', 'guests', 'teams', 'schedule'];
 
@@ -26,6 +27,7 @@ const App = () => (
     <Admin
       restClient={RestClient(trackedResources, firebaseConfig)}
       authClient={AuthClient}
+      dashboard={Details}
       appLayout={AppLayout}
       loginPage={Login}
       menu={Menu}

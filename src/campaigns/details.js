@@ -8,6 +8,7 @@ import Avatar from 'material-ui/Avatar';
 import Carousel from 'material-ui/svg-icons/action/view-carousel';
 import Update from 'material-ui/svg-icons/action/update';
 import Restricted from 'admin-on-rest/lib/auth/Restricted';
+import { getCurrentUser} from '../utils/permissions';
 import TabbedList from '../mui/list/tabbedList';
 import TabList from '../mui/list/tabList';
 
@@ -29,9 +30,11 @@ const nextActionChoices = [
   { id: 0, name: 'Visit Again' },
 ];
 
+const currentUser = getCurrentUser();
+
 const CampaignDetails = (props) => (
   <TabbedList {...props}  title="Campaign">
-    <TabList resource="guests" title="Guests" basePath="guests">
+    <TabList resource="guests" title="Guests" basePath="guests"  filter={{ unitId: currentUser.unitId }}>
       <Responsive
         small={
           <SimpleList
@@ -58,32 +61,7 @@ const CampaignDetails = (props) => (
         }
         />
     </TabList>
-    <TabList resource="teams" title="Teams" basePath="teams">
-      <Responsive
-        small={
-          <SimpleList leftAvatar={record => <Avatar icon={<Carousel />} />} secondaryStyle={{height: 35}} >
-            <TextField label="Team Name" source="name"  type="primary" />
-            <ReferenceArrayField label="Members" reference="users" source="teamMembers" type="secondary" resource="users">
-              <SingleFieldList  >
-                  <ChipField source="displayName" />
-              </SingleFieldList>
-            </ReferenceArrayField>
-          </SimpleList>
-        }
-        medium={
-          <Datagrid>
-            <TextField label="Team Name" source="name" />
-            <ReferenceArrayField label="Members" reference="users" source="teamMembers">
-                <SingleFieldList>
-                    <ChipField source="displayName" />
-                </SingleFieldList>
-              </ReferenceArrayField>
-            <EditButton />
-          </Datagrid>
-        }
-        />
-    </TabList>
-    <TabList resource="schedule" title="Schedule" basePath="schedule">
+    <TabList resource="schedule" title="Schedule" basePath="schedule" filter={{ unitId: currentUser.unitId }}>
       <Responsive
         small={
           <SimpleList leftAvatar={record => <Avatar icon={<Update />} />} >
@@ -103,6 +81,31 @@ const CampaignDetails = (props) => (
             <ReferenceField label="Team" source="teamId" reference="teams" >
               <TextField source="name" />
             </ReferenceField>
+            <EditButton />
+          </Datagrid>
+        }
+        />
+    </TabList>
+    <TabList resource="teams" title="Teams" basePath="teams" filter={{ unitId: currentUser.unitId }}>
+      <Responsive
+        small={
+          <SimpleList leftAvatar={record => <Avatar icon={<Carousel />} />} secondaryStyle={{height: 35}} >
+            <TextField label="Team Name" source="name"  type="primary" />
+            <ReferenceArrayField label="Members" reference="users" source="teamMembers" type="secondary" resource="users">
+              <SingleFieldList  >
+                  <ChipField source="displayName" />
+              </SingleFieldList>
+            </ReferenceArrayField>
+          </SimpleList>
+        }
+        medium={
+          <Datagrid>
+            <TextField label="Team Name" source="name" />
+            <ReferenceArrayField label="Members" reference="users" source="teamMembers">
+                <SingleFieldList>
+                    <ChipField source="displayName" />
+                </SingleFieldList>
+              </ReferenceArrayField>
             <EditButton />
           </Datagrid>
         }
@@ -133,6 +136,11 @@ const restrictPage = (component, route) => {
 
 const Details = () => (
   <Switch>
+    <Route
+        exact
+        path={`/`}
+        render={restrictPage(CampaignDetails, 'list')}
+    />
     <Route
         exact
         path={`/campaigns-details`}

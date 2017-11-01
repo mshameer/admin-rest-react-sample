@@ -8,7 +8,9 @@ import TabbedForm from '../mui/form/tabbedForm';
 import Edit from '../mui/detail/edit';
 import Avatar from 'material-ui/Avatar';
 import Update from 'material-ui/svg-icons/action/update';
+import { getCurrentUser} from '../utils/permissions';
 
+const currentUser = getCurrentUser();
 export const ScheduleList = (props) => (
   <List {...props}>
     <Responsive
@@ -51,7 +53,7 @@ export const ScheduleList = (props) => (
         <ReferenceInput label="Campaign" source="campaignId" reference="campaigns" allowEmpty >
           <SelectInput optionText="title" options={{ fullWidth: true }} />
         </ReferenceInput>
-        <ReferenceInput label="Team" source="teamId" reference="teams" allowEmpty >
+        <ReferenceInput label="Team" source="teamId" reference="teams" allowEmpty  filter={{ unitId: currentUser.unitId }}>
           <SelectInput optionText="name"  options={{ fullWidth: true }} />
         </ReferenceInput>
       </FormTab>
@@ -59,6 +61,7 @@ export const ScheduleList = (props) => (
         <ReferenceInput label="Guests to visit" source="guestIds" reference="guests" allowEmpty >
           <CheckboxGroupInput source="name"  optionText="name"  />
         </ReferenceInput>
+        <TextField source="unitId" style={{ display: 'none'}} defaultValue={currentUser.unitId} />
       </FormTab>
     </TabbedForm>
   )

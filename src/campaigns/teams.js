@@ -61,6 +61,7 @@ export const TeamEdit = (props) => (
         <SelectArrayInput optionText="displayName" options={{ fullWidth: true }} />
       </ReferenceArrayInput>
       <TextInput label="Team Name" source="name" options={{ fullWidth: true }} />
+      <TextField source="unitId" style={{ display: 'none'}} defaultValue={currentUser.unitId} />
     </SimpleForm>
   </Edit>
 );
@@ -73,6 +74,7 @@ export const TeamCreate = (props) => (
         <SelectArrayInput optionText="displayName" options={{ fullWidth: true }} />
       </ReferenceArrayInput>
       <TextInput label="Team Name" source="name"  options={{ fullWidth: true }}/>
+      <TextField source="unitId" style={{ display: 'none'}} defaultValue={currentUser.unitId} />
     </SimpleForm>
   </Create>
 );

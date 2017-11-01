@@ -23,8 +23,8 @@ class EditHead extends Component {
       backTo,
       tab,
     } = this.props;
-
-    const deleteLink = backTo ? `${linkToRecord(basePath, data.id)}/delete?backTo=${backTo}` : `${linkToRecord(basePath, data.id)}/delete`;
+    const record = data || {};
+    const deleteLink = backTo ? `${linkToRecord(basePath, record.id)}/delete?backTo=${backTo}` : `${linkToRecord(basePath, record.id)}/delete`;
 
     const viewTitle =  width === 1
       ? <AppBarMobile
