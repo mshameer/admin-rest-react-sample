@@ -18,7 +18,7 @@ export default function* usersSaga() {
           ...payload
         }
       }));
-      yield put(showNotification('User created successfully'));
+      yield put(showNotification('aor.notification.created'));
     })
 
     yield takeEvery(USER_UPDATE, function* ({ payload }) {
@@ -32,7 +32,7 @@ export default function* usersSaga() {
         id: authData.uid,
         data: payload,
       }));
-      yield put(showNotification('User updated successfully'));
+      yield put(showNotification('aor.notification.updated'));
     })
 }
 

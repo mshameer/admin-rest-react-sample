@@ -16,9 +16,10 @@ const styles = {
         margin: 0,
         top: 'auto',
         right: 20,
-        bottom: 60,
+        bottom: 50,
         left: 'auto',
         position: 'fixed',
+        zIndex: 2,
     },
     appbar: {
       boxShadow: 'none',
@@ -43,6 +44,7 @@ export class TabbedList extends Component {
     state  = {
       activePath: React.Children.toArray(this.props.children)[0].props.basePath,
       tabStyle: { boxShadow },
+      inkBarStyle: { backgroundColor: '#FFF' },
     }
 
     tabHandler = (activePath) => {
@@ -56,10 +58,10 @@ export class TabbedList extends Component {
         ? window.pageYOffset : isCSS1Compat ? document.documentElement.scrollTop : document.body.scrollTop;
       if (scrollTop > 30 && this.state.tabStyle.position !== 'fixed' ){
         this.setState({ tabStyle: { position: 'fixed', zIndex: 50, top: 0, boxShadow, transition: 'position .6s ease' },
-          inkBarStyle: { position: 'fixed', zIndex: 51, top: 48, transition: 'position .6s ease' }});
+          inkBarStyle: { position: 'fixed', zIndex: 51, top: 48, transition: 'position .6s ease', backgroundColor: '#FFF' }});
       } else if (scrollTop < 30 && this.state.tabStyle.position === 'fixed' ){
         this.setState({ tabStyle: { boxShadow, position: 'relative', transition: 'position .6s ease' },
-          inkBarStyle: { position: 'relative', transition: 'position .6s ease' }});
+          inkBarStyle: { position: 'relative', transition: 'position .6s ease', backgroundColor: '#FFF' }});
       }
     }
 

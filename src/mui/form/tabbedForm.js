@@ -60,6 +60,7 @@ export class TabbedForm extends Component {
                         onChange={this.handleChange}
                         contentContainerStyle={contentContainerStyle}
                         tabItemContainerStyle={{ boxShadow: 'rgba(0, 0, 0, 0.35) 0px 1px 6px, rgba(0, 0, 0, 0) 0px 1px 4px' }}
+                        inkBarStyle = {{ backgroundColor: '#FFF' }}
                     >
                         {React.Children.map(
                             children,

@@ -212,7 +212,7 @@ export class List extends Component {
         const muiTheme = getMuiTheme(theme);
         const prefix = autoprefixer(muiTheme);
 
-        const cartStyle =  width === 1 ? { opacity: isLoading ? 0.8 : 1,  boxShadow: 'none' } :  { opacity: isLoading ? 0.8 : 1};
+        const cartStyle =  width === 1 ? { opacity: isLoading ? 0.8 : 1,  boxShadow: 'none', zIndex: -10 } :  { opacity: isLoading ? 0.8 : 1};
 
         return (
             <div className="list-page">

@@ -1,14 +1,15 @@
 import React from 'react';
-import { Datagrid, ReferenceField, TextField, Responsive, FormTab, CheckboxGroupInput,
+import { Datagrid, ReferenceField, TextField, Responsive, FormTab,
   EditButton, ReferenceInput, SelectInput } from 'admin-on-rest';
-import SimpleList from '../mui/list/simpleList'
-import List from '../mui/list';
-import Create from '../mui/detail/create';
-import TabbedForm from '../mui/form/tabbedForm';
-import Edit from '../mui/detail/edit';
+import SimpleList from '../../mui/list/simpleList'
+import List from '../../mui/list';
+import Create from '../../mui/detail/create';
+import TabbedForm from '../../mui/form/tabbedForm';
+import Edit from '../../mui/detail/edit';
 import Avatar from 'material-ui/Avatar';
 import Update from 'material-ui/svg-icons/action/update';
-import { getCurrentUser} from '../utils/permissions';
+import { getCurrentUser} from '../../utils/permissions';
+import GroupInput from '../../mui/form/groupInput';
 
 const currentUser = getCurrentUser();
 export const ScheduleList = (props) => (
@@ -58,8 +59,11 @@ export const ScheduleList = (props) => (
         </ReferenceInput>
       </FormTab>
       <FormTab label="Guests">
-        <ReferenceInput label="Guests to visit" source="guestIds" reference="guests" allowEmpty >
-          <CheckboxGroupInput source="name"  optionText="name"  />
+        <ReferenceInput label="Guests to visit" source="guestIds" reference="guests" allowEmpty
+          sort={{ field: 'name', order: 'ASC' }}
+          filter={{ not: { status:['completed'] }, unitId: currentUser.unitId }}
+          >
+          <GroupInput source="name"  optionText="name"  disabled={(record) => record.status !== 'notScheduled' } secondary="phoneNo"  />
         </ReferenceInput>
         <TextField source="unitId" style={{ display: 'none'}} defaultValue={currentUser.unitId} />
       </FormTab>

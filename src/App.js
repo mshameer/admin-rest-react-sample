@@ -7,9 +7,10 @@ import { UnitList, UnitEdit, UnitCreate } from './admin/units';
 import { UserList, UserEdit, UserCreate } from './admin/users';
 import { CategoryList, CategoryEdit, CategoryCreate } from './admin/categories';
 import { CampaignList, CampaignEdit, CampaignCreate } from './campaigns';
-import { GuestList, GuestEdit, GuestCreate } from './campaigns/guests';
-import { ScheduleList, ScheduleEdit, ScheduleCreate } from './campaigns/schedule';
+import { GuestList, GuestEdit, GuestCreate, GuestShow } from './campaigns/guests';
+import { ScheduleList, ScheduleEdit, ScheduleCreate } from './campaigns/schedule/';
 import { TeamList, TeamEdit, TeamCreate } from './campaigns/teams';
+import { PlaceList, PlaceEdit, PlaceCreate } from './admin/places';
 import { RestClient, AuthClient } from './utils/firebase-client';
 import Delete from './mui/detail/delete';
 import appReducers from './reducers';
@@ -21,7 +22,18 @@ import AppLayout from './mui/layout/appLayout.js';
 import firebaseConfig from './config/firebase';
 import Details from './campaigns/details';
 
-const trackedResources = ['districts', 'zones', 'units', 'users', 'categories', 'campaigns', 'guests', 'teams', 'schedule'];
+const trackedResources = [
+  'districts',
+  'zones',
+  'units',
+  'users',
+  'categories',
+  'campaigns',
+  'guests',
+  'teams',
+  'schedule',
+  'places',
+];
 
 const App = () => (
     <Admin
@@ -42,9 +54,10 @@ const App = () => (
       <Resource name="units" list={UnitList} edit={UnitEdit} create={UnitCreate} remove={Delete} />
       <Resource name="categories" list={CategoryList} edit={CategoryEdit} create={CategoryCreate} remove={Delete} />
       <Resource name="campaigns" list={CampaignList} edit={CampaignEdit} create={CampaignCreate} remove={Delete} />
-      <Resource name="guests" list={GuestList} edit={GuestEdit} create={GuestCreate} remove={Delete} />
+      <Resource name="guests" list={GuestList} edit={GuestEdit} create={GuestCreate} remove={Delete} show={GuestShow}/> 
       <Resource name="teams" list={TeamList} edit={TeamEdit} create={TeamCreate} remove={Delete} />
       <Resource name="schedule" list={ScheduleList} edit={ScheduleEdit} create={ScheduleCreate} remove={Delete} />
+      <Resource name="places" list={PlaceList} edit={PlaceEdit} create={PlaceCreate} remove={Delete} />
     </Admin>
 );
 

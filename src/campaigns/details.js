@@ -13,17 +13,9 @@ import TabbedList from '../mui/list/tabbedList';
 import TabList from '../mui/list/tabList';
 
 const campaignStatus = [
-  { id: 'notStarted', name: 'Not Started' },
-  { id: 'inProgress', name: 'In Progress' },
+  { id: 'notScheduled', name: 'Not Scheduled' },
+  { id: 'scheduled', name: 'Scheduled' },
   { id: 'completed', name: 'Completed' },
-];
-
-const placeChoices = [
-  { id: 1, name: 'Karikode' },
-  { id: 2, name: 'Chanthanathuthope' },
-  { id: 3, name: 'Mamoodu' },
-  { id: 4, name: 'Kadappakkada' },
-  { id: 5, name: 'Kadamukku' },
 ];
 
 const nextActionChoices = [
@@ -34,15 +26,18 @@ const currentUser = getCurrentUser();
 
 const CampaignDetails = (props) => (
   <TabbedList {...props}  title="Campaign">
-    <TabList resource="guests" title="Guests" basePath="guests"  filter={{ unitId: currentUser.unitId }}>
+    <TabList resource="guests" title="Guests" basePath="guests"  filter={{ unitId: currentUser.unitId }} sort={{ field: 'created_at', order: 'DESC' }} >
       <Responsive
         small={
           <SimpleList
             leftAvatar={record => <Avatar icon={<Actors />} />}
+            orView={ record => record.status === 'completed' }
           >
             <TextField source="name" type="primary" />
             <TextField source="phoneNo" type="secondary" />
-            <SelectField source="place" choices={placeChoices} type="secondaryPlus"  />
+            <ReferenceField label="Place" source="place" reference="places" type="secondary" linkType="none" >
+              <TextField source="name" />
+            </ReferenceField>
             <SelectField source="status" choices={campaignStatus} type="tertiary"  />
           </SimpleList>
         }
@@ -50,10 +45,12 @@ const CampaignDetails = (props) => (
           <Datagrid>
             <TextField label="Name" source="name" />
             <TextField label="Phone No" source="phoneNo" />
-            <SelectField source="place" choices={placeChoices} label="Place"  />
+            <ReferenceField label="Unit" source="unitId" reference="units" type="secondary" linkType="none" >
+              <TextField source="name" />
+            </ReferenceField>
             <SelectField label="Next Action"  source="nextAction" choices={nextActionChoices}  />
-            <ReferenceField label="Referred by" source="referredBy" reference="users" >
-              <TextField source="displayName" />
+            <ReferenceField label="Place" source="place" reference="places" type="secondary" linkType="none" >
+              <TextField source="name" />
             </ReferenceField>
             <SelectField source="status" choices={campaignStatus}  />
             <EditButton />

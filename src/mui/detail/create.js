@@ -20,13 +20,6 @@ class Create extends Component {
             .join('/');
     }
 
-    defaultRedirectRoute() {
-        const { hasShow, hasEdit } = this.props;
-        if (hasEdit) return 'edit';
-        if (hasShow) return 'show';
-        return 'list';
-    }
-
     save = (record, redirect) => {
         this.props.crudCreate(
             this.props.resource,
@@ -83,10 +76,7 @@ class Create extends Component {
                         basePath,
                         record: {},
                         translate,
-                        redirect:
-                            typeof children.props.redirect === 'undefined'
-                                ? this.defaultRedirectRoute()
-                                : children.props.redirect,
+                        redirect: backTo || 'list'
                     })}
                 </Card>
             </div>

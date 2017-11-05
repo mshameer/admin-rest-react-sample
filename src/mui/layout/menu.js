@@ -9,6 +9,7 @@ import People from 'material-ui/svg-icons/social/people';
 import Weekend from 'material-ui/svg-icons/content/weekend';
 import Actors from 'material-ui/svg-icons/av/recent-actors';
 import Update from 'material-ui/svg-icons/action/update';
+import Place from 'material-ui/svg-icons/maps/place';
 import Carousel from 'material-ui/svg-icons/action/view-carousel';
 import {spacing, typography} from 'material-ui/styles';
 import {white, blue600} from 'material-ui/styles/colors';
@@ -60,7 +61,6 @@ export default ({ resources, onMenuTap, logout }) => (
       </div>
     </div>
     <List>
-      <MenuItem primaryText="Members"  to="/users" onClick={onMenuTap} leftIcon={<People />} />
       <MenuItem primaryText="Campaigns"  to="/campaigns-details" onClick={onMenuTap} leftIcon={<Weekend />} />
       <WithPermission type={ZONE_LEVEL_PERMISSION} role={role}>
         <MenuItem
@@ -75,6 +75,8 @@ export default ({ resources, onMenuTap, logout }) => (
               ]}
             />
       </WithPermission>
+      <MenuItem primaryText="Members"  to="/users" onClick={onMenuTap} leftIcon={<People />} />
+      <MenuItem primaryText="Places"  to="/places" onClick={onMenuTap} leftIcon={<Place />} />
       <WithPermission type={STATE_LEVEL_PERMISSION} role={role}>
         <MenuItem
            primaryText="Organization"

@@ -22,6 +22,14 @@ const timestampFieldNames = {
   updatedAt: 'updated_at'
 }
 
+const arrayRemove = (array, item) => {
+  const index = array.indexOf(item);
+  if (index > -1) {
+      array.splice(index, 1);
+  }
+  return array;
+}
+
 export default (trackedResources = [], firebaseConfig = {}, options = {}) => {
   Object.assign(timestampFieldNames, options.timestampFieldNames)
 
@@ -117,11 +125,49 @@ export default (trackedResources = [], firebaseConfig = {}, options = {}) => {
               if (params.target && params.id) {
                 filter[params.target] = params.id
               }
+              const filterOrKeys = filter.or && Object.keys(filter.or) || [];
 
-              const filterKeys = Object.keys(filter)
-              /* TODO Must have a better way */
-              if (filterKeys.length) {
+              if (filterOrKeys.length) {
                 Object.values(resourcesData[resource]).forEach(value => {
+                    filterOrKeys.forEach( key => {
+                      if(Array.isArray(filter.or[key])) {
+                        filter.or[key].forEach(propertyVal => {
+                          if(value[key] === propertyVal) {
+                            values.push(value)
+                          }
+                        });
+                      }
+                    });
+                })
+              } else {
+                values = Object.values(resourcesData[resource])
+              }
+
+              const filternotKeys = filter.not && Object.keys(filter.not) || [];
+              let notValues = []
+              if (filternotKeys.length) {
+                Object.values(values).forEach(value => {
+                    filternotKeys.forEach( key => {
+                      if(Array.isArray(filter.not[key])) {
+                        filter.not[key].forEach(propertyVal => {
+                          if(value[key] !== propertyVal) {
+                            notValues.push(value)
+                          }
+                        });
+                      }
+                    });
+                })
+              } else {
+                notValues = values;
+              }
+
+              let filterKeys = Object.keys(filter);
+              filterKeys = arrayRemove(filterKeys, 'or');
+              filterKeys = arrayRemove(filterKeys, 'not');
+
+              let finalValues = []
+              if (filterKeys.length) {
+                Object.values(notValues).forEach(value => {
                   let filterIndex = 0
                   while (filterIndex < filterKeys.length) {
                     let property = filterKeys[filterIndex]
@@ -134,22 +180,22 @@ export default (trackedResources = [], firebaseConfig = {}, options = {}) => {
                     }
                     filterIndex++
                   }
-                  values.push(value)
+                  finalValues.push(value)
                 })
               } else {
-                values = Object.values(resourcesData[resource])
+                finalValues = notValues;
               }
 
               if(params.sort) {
-                arraySort(values, params.sort.field, {reverse: params.sort.order !== 'ASC'})
+                arraySort(finalValues, params.sort.field, {reverse: params.sort.order !== 'ASC'})
               }
 
               const {page, perPage, infinit} = params.pagination
               const _start = infinit ? 0 : (page - 1) * perPage
               const _end = page * perPage
-              data = values.slice(_start, _end)
+              data = finalValues.slice(_start, _end)
               ids = Object.keys(resourcesData[resource]).slice(_start, _end)
-              total = values.length
+              total = finalValues.length
             } else {
               console.error('Unexpected parameters: ', params, type)
               reject(new Error('Error processing request'))

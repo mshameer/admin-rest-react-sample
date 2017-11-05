@@ -1,5 +1,5 @@
 import React from 'react';
-import { Datagrid, TextField, Responsive, SelectArrayInput, ReferenceArrayInput, ReferenceArrayField,
+import { Datagrid, TextField, Responsive, CheckboxGroupInput, ReferenceInput, ReferenceArrayField,
   EditButton, ChipField, SingleFieldList, SimpleForm, TextInput } from 'admin-on-rest';
 import SimpleList from '../mui/list/simpleList'
 import List from '../mui/list';
@@ -54,27 +54,24 @@ const validateTeamForm = (values) => {
   return errors
 };
 
+const teamForm = () => (
+  <SimpleForm validate={validateTeamForm} >
+    <TextInput label="Team Name" source="name" options={{ fullWidth: true }} />
+    <ReferenceInput source="teamMembers" reference="users" label="Team Members" allowEmpty filter={{ unitId: currentUser.unitId }} >
+      <CheckboxGroupInput  optionText="displayName"  />
+    </ReferenceInput>
+    <TextField source="unitId" style={{ display: 'none'}} defaultValue={currentUser.unitId} />
+  </SimpleForm>
+)
+
 export const TeamEdit = (props) => (
   <Edit title={<TeamTitle />} {...props}>
-    <SimpleForm validate={validateTeamForm} >
-      <ReferenceArrayInput source="teamMembers" reference="users" label="Team Members" allowEmpty >
-        <SelectArrayInput optionText="displayName" options={{ fullWidth: true }} />
-      </ReferenceArrayInput>
-      <TextInput label="Team Name" source="name" options={{ fullWidth: true }} />
-      <TextField source="unitId" style={{ display: 'none'}} defaultValue={currentUser.unitId} />
-    </SimpleForm>
+    { teamForm() }
   </Edit>
 );
 
 export const TeamCreate = (props) => (
   <Create {...props}>
-    <SimpleForm validate={validateTeamForm} >
-      <ReferenceArrayInput source="teamMembers" reference="users"
-          label="Team Members" allowEmpty filter={{unitId: currentUser.unitId}}>
-        <SelectArrayInput optionText="displayName" options={{ fullWidth: true }} />
-      </ReferenceArrayInput>
-      <TextInput label="Team Name" source="name"  options={{ fullWidth: true }}/>
-      <TextField source="unitId" style={{ display: 'none'}} defaultValue={currentUser.unitId} />
-    </SimpleForm>
+    { teamForm() }
   </Create>
 );

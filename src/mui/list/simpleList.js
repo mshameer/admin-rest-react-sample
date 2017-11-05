@@ -37,6 +37,7 @@ class SimpleList extends Component {
         rightAvatar,
         rightIcon,
         backTo,
+        orView,
       } = this.props;
 
       return (
@@ -47,6 +48,8 @@ class SimpleList extends Component {
                 listChildren[child.props.type] = child;
               })
               const editLink = backTo ? `${basePath}/${id}?backTo=${backTo}` : `${basePath}/${id}`;
+              const showLink = backTo ? `${basePath}/${id}/show?backTo=${backTo}` : `${basePath}/${id}/show`;
+              const itemLink = orView && orView(data[id]) ? showLink : editLink;
               return([
                 <ListItem
                     key={id}
@@ -72,7 +75,7 @@ class SimpleList extends Component {
                     leftIcon={leftIcon && leftIcon(data[id], id)}
                     rightAvatar={rightAvatar && rightAvatar(data[id], id)}
                     rightIcon={rightIcon && rightIcon(data[id], id)}
-                    containerElement={<Link to={editLink} />}
+                    containerElement={<Link to={itemLink} />}
                 />,
               ids.length - 1 > index && <Divider inset={true} key={`${id}-devider`} />]
             )})}
@@ -94,6 +97,8 @@ SimpleList.propTypes = {
     leftIcon: PropTypes.func,
     rightAvatar: PropTypes.func,
     rightIcon: PropTypes.func,
+    orView: PropTypes.func,
 };
+
 
 export default SimpleList;
