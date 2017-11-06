@@ -8,6 +8,7 @@ import withWidth from 'material-ui/utils/withWidth';
 import MenuItem from 'material-ui/MenuItem';
 
 import Restricted from 'admin-on-rest/lib/auth/Restricted';
+import Chart from './chart';
 import { getCurrentUser} from '../utils/permissions';
 
 
@@ -34,6 +35,9 @@ class Home extends Component {
         return (
           <div className="list-page">
               {viewTitle}
+              <div style={{position: 'absolute', left: '-134px', width: '300px', height: '400px'}}>
+                <Chart />
+              </div>
           </div>
         );
     }
