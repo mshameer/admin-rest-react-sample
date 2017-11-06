@@ -22,6 +22,9 @@ const themeDefault = getMuiTheme({
   tabs:{
     backgroundColor: cyan700,
   },
+  home: {
+    dashColor: cyan700,
+  }
 });
 
 

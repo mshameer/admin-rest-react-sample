@@ -1,11 +1,14 @@
 import React, { Component, createElement } from 'react';
 import PropTypes from 'prop-types';
+import compose from 'recompose/compose';
 import { Route, Switch } from 'react-router-dom';
+import muiThemeable from 'material-ui/styles/muiThemeable';
 import Avatar from 'material-ui/Avatar';
 import { CardTitle } from 'material-ui/Card';
 import AppBarMobile from '../mui/layout/appBarMobile';
 import withWidth from 'material-ui/utils/withWidth';
 import MenuItem from 'material-ui/MenuItem';
+import {white, blue600} from 'material-ui/styles/colors';
 
 import Restricted from 'admin-on-rest/lib/auth/Restricted';
 import Chart from './chart';
@@ -20,6 +23,7 @@ class Home extends Component {
         const {
             children,
             width,
+            muiTheme,
             ...other,
         } = this.props;
         const basePath = this.props.location.pathname.replace(/\/$/, '');
@@ -35,8 +39,8 @@ class Home extends Component {
         return (
           <div className="list-page">
               {viewTitle}
-              <div style={{position: 'absolute', left: '-134px', width: '300px', height: '400px'}}>
-                <Chart />
+              <div style={{ width: '100%', height: '200px', backgroundColor: muiTheme.home.dashColor, paddingBottom: 20 }}>
+                <Chart stroke={muiTheme.home.dashColor} />
               </div>
           </div>
         );
@@ -49,7 +53,12 @@ Home.propTypes = {
     width: PropTypes.number,
 };
 
-const AppHome =  withWidth()(Home);
+const enhance = compose(
+  muiThemeable(),
+  withWidth()
+);
+
+const AppHome =  enhance(Home);
 
 
 const restrictPage = (component, route) => {

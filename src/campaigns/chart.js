@@ -1,12 +1,12 @@
 import React, { Component } from 'react';
 import { PieChart, Pie, Sector, ResponsiveContainer } from 'recharts';
-const data = [{name: 'Not Scheduled', value: 400}, {name: 'Scheduled', value: 300},
-                  {name: 'Completed', value: 300}];
+const data = [{name: 'Completed', value: 80}, {name: 'Scheduled', value: 10},
+                  {name: 'Not Scheduled', value: 10}];
 
 const renderActiveShape = (props) => {
   const RADIAN = Math.PI / 180;
   const { cx, cy, midAngle, innerRadius, outerRadius, startAngle, endAngle,
-    fill, payload, percent, value } = props;
+    fill, payload, percent, value, name } = props;
   const sin = Math.sin(-RADIAN * midAngle);
   const cos = Math.cos(-RADIAN * midAngle);
   const sx = cx + (outerRadius + 10) * cos;
@@ -16,10 +16,9 @@ const renderActiveShape = (props) => {
   const ex = mx + (cos >= 0 ? 1 : -1) * 22;
   const ey = my;
   const textAnchor = cos >= 0 ? 'start' : 'end';
-
   return (
     <g>
-      <text x={cx} y={cy} dy={8} textAnchor="middle" fill={fill}>{payload.name}</text>
+      <text x={cx} y={cy} dy={8} textAnchor="middle" fill={fill}>Guest</text>
       <Sector
         cx={cx}
         cy={cy}
@@ -38,43 +37,54 @@ const renderActiveShape = (props) => {
         outerRadius={outerRadius + 10}
         fill={fill}
       />
-      <path d={`M${sx},${sy}L${mx},${my}L${ex},${ey}`} stroke={fill} fill="none"/>
-      <circle cx={ex} cy={ey} r={2} fill={fill} stroke="none"/>
-      <text x={ex + (cos >= 0 ? 1 : -1) * 12} y={ey} textAnchor={textAnchor} fill="#333">{`PV ${value}`}</text>
-      <text x={ex + (cos >= 0 ? 1 : -1) * 12} y={ey} dy={18} textAnchor={textAnchor} fill="#999">
-        {`(${(percent * 100)}%)`}
+    <path d={`M${sx},${sy}L${mx},${my}L${ex},${ey}`} stroke="#b9f1ff" fill="none"/>
+      <circle cx={ex} cy={ey} r={2} fill="#b9f1ff" stroke="none"/>
+      <text x={ex + (cos >= 0 ? 1 : -1) * 12} y={ey} textAnchor={textAnchor} fill="#b9f1ff" style={{ fontSize: 10 }} >{name}</text>
+      <text x={ex + (cos >= 0 ? 1 : -1) * 12} y={ey} dy={18} textAnchor={textAnchor} fill="#b9f1ff">
+        {`(${(percent * 100).toFixed(0)}%)`}
       </text>
     </g>
   );
 };
 
+const renderLabel = (props) => {
+  const RADIAN = Math.PI / 180;
+  const { cx, cy, midAngle, innerRadius, outerRadius, startAngle, endAngle,
+    fill, payload, percent, name, label, index} = props;
+  const sin = Math.sin(-RADIAN * midAngle);
+  const cos = Math.cos(-RADIAN * midAngle);
+  const sx = cx + (outerRadius + 10) * cos;
+  const sy = cy + (outerRadius + 10) * sin;
+  const mx = cx + (outerRadius + 30) * cos;
+  const my = cy + (outerRadius + 30) * sin;
+  const textAnchor = cos >= 0 ? 'start' : 'end';
+  return ( index !== 0 ?
+    <g>
+      <text style={{ fontSize: 10 }} x={mx + (cos >= 0 ? 1 : -1) } y={my} textAnchor={textAnchor} fill="#b9f1ff">{name}</text>
+      <text x={mx + (cos >= 0 ? 1 : -1) } y={my} dy={18} textAnchor={textAnchor} fill="#b9f1ff">
+        {`(${(percent * 100).toFixed(0)}%)`}
+      </text>
+    </g> : null
+  );
+}
+
 export default class TwoLevelPieChart extends Component {
 
-  state = {
-    activeIndex: 0,
-  }
-
-  onPieEnter = (data, index) => {
-    this.setState({
-      activeIndex: index,
-    });
-  }
 
 	render () {
   	return (
       <ResponsiveContainer>
       	<PieChart>
           <Pie
-          	activeIndex={this.state.activeIndex}
+          	activeIndex={0}
             activeShape={renderActiveShape}
+            label={renderLabel}
             data={data}
-            cx={300}
-            cy={200}
-            innerRadius={60}
-            outerRadius={80}
-            fill="#8884d8"
+            innerRadius={40}
+            outerRadius={50}
+            fill="#FFF"
             midAngle={120}
-            onMouseEnter={this.onPieEnter}
+            stroke={this.props.stroke}
           />
          </PieChart>
         </ResponsiveContainer>
