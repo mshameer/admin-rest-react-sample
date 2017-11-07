@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import { PieChart, Pie, Sector, ResponsiveContainer } from 'recharts';
-const data = [{name: 'Completed', value: 80}, {name: 'Scheduled', value: 10},
+const data = [{name: 'Completed', value: 40}, {name: 'Scheduled', value: 50},
                   {name: 'Not Scheduled', value: 10}];
 
 const renderActiveShape = (props) => {
@@ -18,7 +18,8 @@ const renderActiveShape = (props) => {
   const textAnchor = cos >= 0 ? 'start' : 'end';
   return (
     <g>
-      <text x={cx} y={cy} dy={8} textAnchor="middle" fill={fill}>Guest</text>
+      <text x={cx} y={cy-5} textAnchor="middle" style={{ fontSize: 10 }} fill={fill}>Guest Total</text>
+      <text x={cx} y={cy} dy={10} textAnchor="middle" fill={fill}>245</text>
       <Sector
         cx={cx}
         cy={cy}
