@@ -4,7 +4,6 @@ import { connect } from 'react-redux';
 import { Card } from 'material-ui/Card';
 import compose from 'recompose/compose';
 import inflection from 'inflection';
-import ViewTitle from 'admin-on-rest/lib/mui/layout/ViewTitle';
 import Title from 'admin-on-rest/lib/mui/layout/Title';
 import { crudGetOne as crudGetOneAction } from 'admin-on-rest/lib/actions/dataActions';
 import DefaultActions from 'admin-on-rest/lib/mui/detail/ShowActions';

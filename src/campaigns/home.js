@@ -3,21 +3,18 @@ import PropTypes from 'prop-types';
 import compose from 'recompose/compose';
 import { Route, Switch } from 'react-router-dom';
 import muiThemeable from 'material-ui/styles/muiThemeable';
-import Avatar from 'material-ui/Avatar';
 import { CardTitle } from 'material-ui/Card';
 import AppBarMobile from '../mui/layout/appBarMobile';
 import withWidth from 'material-ui/utils/withWidth';
 import MenuItem from 'material-ui/MenuItem';
-import {white, blue600} from 'material-ui/styles/colors';
+import {white} from 'material-ui/styles/colors';
 import FlatButton from 'material-ui/FlatButton';
 
 import People from 'material-ui/svg-icons/social/people';
 import Weekend from 'material-ui/svg-icons/content/weekend';
 import ArrowRight from 'material-ui/svg-icons/image/navigate-next';
-import Place from 'material-ui/svg-icons/maps/place';
 import Restricted from 'admin-on-rest/lib/auth/Restricted';
 import Chart from './chart';
-import { getCurrentUser} from '../utils/permissions';
 
 const styles = {
   chart: {
@@ -94,16 +91,14 @@ const styles = {
 }
 
 
-const currentUser = getCurrentUser();
+// const currentUser = getCurrentUser();
 
 class Home extends Component {
 
     render() {
         const {
-            children,
             width,
             muiTheme,
-            ...other,
         } = this.props;
         const basePath = this.props.location.pathname.replace(/\/$/, '');
         const viewTitle =  width === 1

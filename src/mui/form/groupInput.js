@@ -49,7 +49,7 @@ export class CheckboxGroupInputComponent extends Component {
         if (isChecked) {
             onChange([...value, ...[event.target.value]]);
         } else {
-            onChange(value.filter(v => v != event.target.value));
+            onChange(value.filter(v => v !== event.target.value));
         }
     };
 
@@ -64,7 +64,7 @@ export class CheckboxGroupInputComponent extends Component {
             translateChoice,
             secondary,
         } = this.props;
-        const disStatus =  disabled && disabled(choice) ? ( this.value && this.value.find(v => v == get(choice, optionValue)) ?  false :  true ) : false;
+        const disStatus =  disabled && disabled(choice) ? ( this.value && this.value.find(v => v === get(choice, optionValue)) ?  false :  true ) : false;
         const choiceName = React.isValidElement(optionText) // eslint-disable-line no-nested-ternary
             ? React.cloneElement(optionText, { record: choice })
             : typeof optionText === 'function'
@@ -76,7 +76,7 @@ export class CheckboxGroupInputComponent extends Component {
           leftCheckbox={<Checkbox
               checked={
                   value ? (
-                      value.find(v => v == get(choice, optionValue)) !==
+                      value.find(v => v === get(choice, optionValue)) !==
                       undefined
                   ) : (
                       false

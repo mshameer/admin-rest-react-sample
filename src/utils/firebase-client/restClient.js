@@ -63,11 +63,9 @@ export default (trackedResources = [], firebaseConfig = {}, options = {}) => {
     } else {
       resourcesPaths[resource] = resource
     }
-
     resourcesData[resource] = {}
     resourcesStatus[resource] = new Promise(resolve => {
       let ref = resourcesReferences[resource] = firebase.database().ref(resourcesPaths[resource])
-
       ref.on('value', function (childSnapshot) {
         /** Uses "value" to fetch initial data. Avoid the AOR to show no results */
         if (childSnapshot.key === resource) { resourcesData[resource] = childSnapshot.val() || [] }
@@ -96,6 +94,7 @@ export default (trackedResources = [], firebaseConfig = {}, options = {}) => {
 
   return (type, resource, params) => {
     return new Promise((resolve, reject) => {
+      // console.log(resourcesStatus[resource], resource);
       resourcesStatus[resource].then(() => {
         switch (type) {
           case GET_LIST:
@@ -125,7 +124,7 @@ export default (trackedResources = [], firebaseConfig = {}, options = {}) => {
               if (params.target && params.id) {
                 filter[params.target] = params.id
               }
-              const filterOrKeys = filter.or && Object.keys(filter.or) || [];
+              const filterOrKeys = (filter.or && Object.keys(filter.or)) || [];
 
               if (filterOrKeys.length) {
                 Object.values(resourcesData[resource]).forEach(value => {
@@ -143,7 +142,7 @@ export default (trackedResources = [], firebaseConfig = {}, options = {}) => {
                 values = Object.values(resourcesData[resource])
               }
 
-              const filternotKeys = filter.not && Object.keys(filter.not) || [];
+              const filternotKeys = (filter.not && Object.keys(filter.not)) || [];
               let notValues = []
               if (filternotKeys.length) {
                 Object.values(values).forEach(value => {

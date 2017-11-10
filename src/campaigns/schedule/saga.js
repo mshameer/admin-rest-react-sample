@@ -1,5 +1,4 @@
 import { put, takeEvery, select } from 'redux-saga/effects';
-import { showNotification } from 'admin-on-rest';
 import { CRUD_CREATE_SUCCESS, crudUpdate, crudGetOne, CRUD_UPDATE, CRUD_UPDATE_SUCCESS } from 'admin-on-rest/lib/actions/dataActions';
 
 function* updateGuest({ payload, meta, requestPayload }) {
