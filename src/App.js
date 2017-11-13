@@ -20,8 +20,9 @@ import Login from './auth/Login';
 import Menu from './mui/layout/menu';
 import AppLayout from './mui/layout/appLayout.js';
 import firebaseConfig from './config/firebase';
-import Details from './campaigns/details';
+import Home from './campaigns/dashboard/';
 
+console.log(process.env.REACT_APP_SECRET_CODE);
 const trackedResources = [
   'districts',
   'zones',
@@ -39,7 +40,7 @@ const App = () => (
     <Admin
       restClient={RestClient(trackedResources, firebaseConfig)}
       authClient={AuthClient}
-      dashboard={Details}
+      dashboard={Home}
       appLayout={AppLayout}
       loginPage={Login}
       menu={Menu}
@@ -54,7 +55,7 @@ const App = () => (
       <Resource name="units" list={UnitList} edit={UnitEdit} create={UnitCreate} remove={Delete} />
       <Resource name="categories" list={CategoryList} edit={CategoryEdit} create={CategoryCreate} remove={Delete} />
       <Resource name="campaigns" list={CampaignList} edit={CampaignEdit} create={CampaignCreate} remove={Delete} />
-      <Resource name="guests" list={GuestList} edit={GuestEdit} create={GuestCreate} remove={Delete} show={GuestShow}/> 
+      <Resource name="guests" list={GuestList} edit={GuestEdit} create={GuestCreate} remove={Delete} show={GuestShow}/>
       <Resource name="teams" list={TeamList} edit={TeamEdit} create={TeamCreate} remove={Delete} />
       <Resource name="schedule" list={ScheduleList} edit={ScheduleEdit} create={ScheduleCreate} remove={Delete} />
       <Resource name="places" list={PlaceList} edit={PlaceEdit} create={PlaceCreate} remove={Delete} />

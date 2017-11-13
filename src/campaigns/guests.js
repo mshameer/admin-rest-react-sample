@@ -68,7 +68,7 @@ const nextActionChoices = [
   { id: 0, name: 'Visit Again' },
 ];
 
-const currentUser = getCurrentUser();
+const { unitId, zoneId, districtId } = getCurrentUser() || {};
 
 export const GuestList = (props) => (
   <List {...props} title="Guests">
@@ -180,10 +180,10 @@ const getGuestForm = () => (
     <FormTab label="Guest" >
       <TextInput source="name"  options={{ fullWidth: true }} />
       <TextInput source="phoneNo" label="Phone No" options={{ fullWidth: true }}/>
-      <ReferenceInput label="Place to identify" source="place" reference="places" filter={{ unitId: currentUser.unitId }} allowEmpty >
+      <ReferenceInput label="Place to identify" source="place" reference="places" filter={{ unitId }} allowEmpty >
         <AutocompleteInput optionText="name"  options={{ fullWidth: true }} filter={AutoComplete.caseInsensitiveFilter} maxSearchResults={5} />
       </ReferenceInput>
-      <ReferenceInput label="Member Referred by" source="referredBy" reference="users" filter={{ unitId: currentUser.unitId }} allowEmpty >
+      <ReferenceInput label="Member Referred by" source="referredBy" reference="users" filter={{ unitId }} allowEmpty >
         <SelectInput optionText="displayName"  options={{ fullWidth: true }}/>
       </ReferenceInput>
     </FormTab>
@@ -202,7 +202,9 @@ const getGuestForm = () => (
       <SelectInput source="nextAction"  label="Next Action" choices={nextActionChoices} options={{ fullWidth: true }}  />
       <LongTextInput source="remark" label="Remark/Notes"  multiLine={true} rows={2}/>
       <SelectInput source="status" choices={campaignStatus} defaultValue="notScheduled"  options={{ fullWidth: true }}  />
-      <TextField source="unitId" style={{ display: 'none'}} defaultValue={currentUser.unitId} />
+      <TextField source="unitId" style={{ display: 'none'}} defaultValue={ unitId } />
+      <TextField source="zoneId" style={{ display: 'none'}} defaultValue={ zoneId } />
+      <TextField source="districtId" style={{ display: 'none'}} defaultValue={ districtId } />
     </FormTab>
   </TabbedForm>
 )

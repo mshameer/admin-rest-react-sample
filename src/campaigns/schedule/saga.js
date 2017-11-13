@@ -1,5 +1,7 @@
 import { put, takeEvery, select } from 'redux-saga/effects';
+
 import { CRUD_CREATE_SUCCESS, crudUpdate, crudGetOne, CRUD_UPDATE, CRUD_UPDATE_SUCCESS } from 'admin-on-rest/lib/actions/dataActions';
+export const LOAD_GUEST_SUCCESS = 'FIREBASE/SCHEDULE/LOAD_GUEST_SUCCESS';
 
 function* updateGuest({ payload, meta, requestPayload }) {
   if(meta.resource === 'schedule'){

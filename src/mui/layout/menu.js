@@ -8,13 +8,14 @@ import Snooze from 'material-ui/svg-icons/av/snooze';
 import People from 'material-ui/svg-icons/social/people';
 import Weekend from 'material-ui/svg-icons/content/weekend';
 import Actors from 'material-ui/svg-icons/av/recent-actors';
+import Dashboard from 'material-ui/svg-icons/action/dashboard';
 import Update from 'material-ui/svg-icons/action/update';
 import Place from 'material-ui/svg-icons/maps/place';
 import Carousel from 'material-ui/svg-icons/action/view-carousel';
 import {spacing, typography} from 'material-ui/styles';
 import {white, blue600} from 'material-ui/styles/colors';
 import Avatar from 'material-ui/Avatar';
-import { getCurrentUser, WithPermission, STATE_LEVEL_PERMISSION, ZONE_LEVEL_PERMISSION } from '../../utils/permissions';
+import { getCurrentUser, WithPermission, STATE_LEVEL_PERMISSION, ZONE_LEVEL_PERMISSION, PERMISSION_NOT_EQUAL_TO } from '../../utils/permissions';
 
 import MenuItem from './menuItem';
 
@@ -61,7 +62,10 @@ export default ({ resources, onMenuTap, logout }) => (
       </div>
     </div>
     <List>
-      <MenuItem primaryText="Campaigns"  to="/campaigns-details" onClick={onMenuTap} leftIcon={<Weekend />} />
+      <MenuItem primaryText="Home"  to="/campaigns-home" onClick={onMenuTap} leftIcon={<Dashboard />} />
+      <WithPermission type={PERMISSION_NOT_EQUAL_TO} role="state" > 
+        <MenuItem primaryText="Campaigns"  to="/campaigns-details" onClick={onMenuTap} leftIcon={<Weekend />} />
+      </WithPermission>
       <WithPermission type={ZONE_LEVEL_PERMISSION} role={role}>
         <MenuItem
            primaryText="Campaigns"

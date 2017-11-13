@@ -3,6 +3,8 @@ export const STATE_LEVEL_PERMISSION = 'PERMISSION/STATE_LEVEL';
 export const DISTRICT_LEVEL_PERMISSION = 'PERMISSION/DISTRICT_LEVEL';
 export const ZONE_LEVEL_PERMISSION = 'PERMISSION/ZONE_LEVEL';
 export const UNIT_LEVEL_PERMISSION = 'PERMISSION/UNIT_LEVEL';
+export const PERMISSION_EQUAL_TO = 'PERMISSION/PERMISSION_EQUAL_TO';
+export const PERMISSION_NOT_EQUAL_TO = 'PERMISSION/PERMISSION_NOT_EQUAL_TO';
 
 const arrType = Array;
 arrType.prototype.contains = function(element){
@@ -33,18 +35,24 @@ export function getCurrentUser(){
   return JSON.parse(currentUser);
 }
 
-export function hasPermission(role, type) {
+export function hasPermission(role, type, ) {
+  const currentUser = getCurrentUser();
+  
   switch(type){
     case APP_LOGIN_PERMISSION:
-    return ['state', 'district', 'zone', 'unit'].contains(role);
+      return ['state', 'district', 'zone', 'unit'].contains(role);
     case STATE_LEVEL_PERMISSION:
-    return role === 'state';
+      return role === 'state';
     case DISTRICT_LEVEL_PERMISSION:
-    return ['state', 'district'].contains(role);
+      return ['state', 'district'].contains(role);
     case ZONE_LEVEL_PERMISSION:
-    return ['state', 'district', 'zone'].contains(role);
+      return ['state', 'district', 'zone'].contains(role);
     case UNIT_LEVEL_PERMISSION:
-    return ['state', 'district', 'zone', 'unit'].contains(role);
+      return ['state', 'district', 'zone', 'unit'].contains(role);
+    case PERMISSION_EQUAL_TO:
+      return currentUser.role === role;
+    case PERMISSION_NOT_EQUAL_TO:
+      return currentUser.role !== role;
     default:
     return false;
   }

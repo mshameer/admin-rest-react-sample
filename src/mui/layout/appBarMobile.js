@@ -20,7 +20,7 @@ const styles = {
         top: 0,
     },
     title: {
-        fontSize: '1.25em',
+        fontSize: '1.2em',
         lineHeight: '2.5em',
     },
     titleLabel: {
