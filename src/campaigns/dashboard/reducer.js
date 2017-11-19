@@ -46,11 +46,20 @@ const getChartData = (guests) => {
   const completedPer = (getStatusCount(guests, 'completed')/total)*100;
   const scheduledPer = (getStatusCount(guests, 'scheduled')/total)*100;
   const notScheduledPer= (getStatusCount(guests, 'notScheduled')/total)*100;
-  return ([
-    {name: 'Completed', value: completedPer},
-    {name: 'Scheduled', value: scheduledPer},
-    {name: 'Not Scheduled', value: notScheduledPer},
-  ]);
+  let chartData = [ ];
+
+  if(completedPer !== 100){
+    chartData = [
+      {name: 'Scheduled', value: scheduledPer},
+      {name: 'Not Scheduled', value: notScheduledPer},
+    ];
+  }
+
+  if(notScheduledPer !== 100){
+    chartData.unshift({name: 'Completed', value: completedPer});
+  }
+
+  return chartData;
 }
 
 export default (state = {}, { type, payload, meta }) => {

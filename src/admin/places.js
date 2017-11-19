@@ -50,8 +50,8 @@ const PlaceTitle = ({ record }) => {
   export const PlaceEdit = (props) => (
     <Edit title={<PlaceTitle />} {...props}>
       <SimpleForm validate={validatePlaceForm} redirect="/places" >
-        <TextInput label="Name" source="name" />
-        <TextField source="unitId" style={{ display: 'none'}} defaultValue={currentUser.unitId} />
+        <TextInput label="Name" source="name"  autocomplete="off" role="presentation" />
+        <TextField source="unitId" style={{ display: 'none'}} defaultValue={currentUser.unitId}  />
       </SimpleForm>
     </Edit>
   );

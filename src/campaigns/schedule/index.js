@@ -1,6 +1,6 @@
 import React from 'react';
 import { Datagrid, ReferenceField, TextField, Responsive, FormTab,
-  EditButton, ReferenceInput, SelectInput } from 'admin-on-rest';
+  EditButton, ReferenceInput, SelectInput, SimpleShowLayout } from 'admin-on-rest';
 import SimpleList from '../../mui/list/simpleList'
 import List from '../../mui/list';
 import Create from '../../mui/detail/create';
@@ -8,6 +8,7 @@ import TabbedForm from '../../mui/form/tabbedForm';
 import Edit from '../../mui/detail/edit';
 import Avatar from 'material-ui/Avatar';
 import Update from 'material-ui/svg-icons/action/update';
+import Show from '../../mui/detail/show';
 import { getCurrentUser} from '../../utils/permissions';
 import GroupInput from '../../mui/form/groupInput';
 
@@ -38,6 +39,19 @@ export const ScheduleList = (props) => (
       }
       />
   </List>
+);
+
+export const ScheduleShow = (props) => (
+    <Show {...props}>
+        <SimpleShowLayout>
+          <ReferenceField label="Campaign" source="campaignId" reference="campaigns" type="primary" linkType="none" >
+            <TextField source="title" />
+          </ReferenceField>
+          <ReferenceField label="Team" source="teamId" reference="teams" type="secondary" linkType="none" >
+            <TextField source="name" />
+          </ReferenceField>
+        </SimpleShowLayout>
+    </Show>
 );
 
   const validateScheduleForm = (values) => {

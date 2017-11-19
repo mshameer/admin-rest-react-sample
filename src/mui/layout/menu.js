@@ -15,7 +15,7 @@ import Carousel from 'material-ui/svg-icons/action/view-carousel';
 import {spacing, typography} from 'material-ui/styles';
 import {white, blue600} from 'material-ui/styles/colors';
 import Avatar from 'material-ui/Avatar';
-import { getCurrentUser, WithPermission, STATE_LEVEL_PERMISSION, ZONE_LEVEL_PERMISSION, PERMISSION_NOT_EQUAL_TO } from '../../utils/permissions';
+import { getCurrentUser, WithPermission, STATE_LEVEL_PERMISSION, ZONE_LEVEL_PERMISSION, PERMISSION_NOT_EQUAL_TO, PERMISSION_EQUAL_TO } from '../../utils/permissions';
 
 import MenuItem from './menuItem';
 
@@ -36,7 +36,8 @@ const styles = {
     },
     heading: {
       display: 'flex',
-      paddingTop: 88,
+      paddingTop: 5,
+      paddingLeft: 5,
     },
     headingBg: {
       padding: '15px 0 20px 12px',
@@ -63,10 +64,10 @@ export default ({ resources, onMenuTap, logout }) => (
     </div>
     <List>
       <MenuItem primaryText="Home"  to="/campaigns-home" onClick={onMenuTap} leftIcon={<Dashboard />} />
-      <WithPermission type={PERMISSION_NOT_EQUAL_TO} role="state" > 
+      <WithPermission type={PERMISSION_NOT_EQUAL_TO} role="state" >
         <MenuItem primaryText="Campaigns"  to="/campaigns-details" onClick={onMenuTap} leftIcon={<Weekend />} />
       </WithPermission>
-      <WithPermission type={ZONE_LEVEL_PERMISSION} role={role}>
+      <WithPermission type={PERMISSION_EQUAL_TO} role="state">
         <MenuItem
            primaryText="Campaigns"
            leftIcon={<Weekend />}

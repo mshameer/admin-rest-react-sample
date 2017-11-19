@@ -8,7 +8,7 @@ import { UserList, UserEdit, UserCreate } from './admin/users';
 import { CategoryList, CategoryEdit, CategoryCreate } from './admin/categories';
 import { CampaignList, CampaignEdit, CampaignCreate } from './campaigns';
 import { GuestList, GuestEdit, GuestCreate, GuestShow } from './campaigns/guests';
-import { ScheduleList, ScheduleEdit, ScheduleCreate } from './campaigns/schedule/';
+import { ScheduleList, ScheduleEdit, ScheduleCreate, ScheduleShow } from './campaigns/schedule/';
 import { TeamList, TeamEdit, TeamCreate } from './campaigns/teams';
 import { PlaceList, PlaceEdit, PlaceCreate } from './admin/places';
 import { RestClient, AuthClient } from './utils/firebase-client';
@@ -57,7 +57,7 @@ const App = () => (
       <Resource name="campaigns" list={CampaignList} edit={CampaignEdit} create={CampaignCreate} remove={Delete} />
       <Resource name="guests" list={GuestList} edit={GuestEdit} create={GuestCreate} remove={Delete} show={GuestShow}/>
       <Resource name="teams" list={TeamList} edit={TeamEdit} create={TeamCreate} remove={Delete} />
-      <Resource name="schedule" list={ScheduleList} edit={ScheduleEdit} create={ScheduleCreate} remove={Delete} />
+      <Resource name="schedule" list={ScheduleList} edit={ScheduleEdit} create={ScheduleCreate} remove={Delete} show={ScheduleShow} />
       <Resource name="places" list={PlaceList} edit={PlaceEdit} create={PlaceCreate} remove={Delete} />
     </Admin>
 );

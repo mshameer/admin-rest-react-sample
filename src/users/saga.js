@@ -1,5 +1,6 @@
 import { put, takeEvery, call } from 'redux-saga/effects';
 import { showNotification } from 'admin-on-rest';
+import { push } from 'react-router-redux';
 import firebase from 'firebase'
 
 import { fetchApi } from '../utils/api-fetch'
@@ -19,6 +20,7 @@ export default function* usersSaga() {
         }
       }));
       yield put(showNotification('aor.notification.created'));
+      yield put(push('/users'));
     })
 
     yield takeEvery(USER_UPDATE, function* ({ payload }) {
@@ -33,6 +35,7 @@ export default function* usersSaga() {
         data: payload,
       }));
       yield put(showNotification('aor.notification.updated'));
+      yield put(push('/users'));
     })
 }
 

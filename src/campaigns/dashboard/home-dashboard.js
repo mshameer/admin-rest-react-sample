@@ -22,7 +22,6 @@ const subRole = {
   state: 'district',
   district: 'zone',
   zone: 'unit',
-  unit: 'campaigns',
 }
 
 class HomeDashboard extends Component {
@@ -45,12 +44,16 @@ class HomeDashboard extends Component {
         const title = role === 'state' ?  'State Level' : adminOrg.name;
         const guestCount = Object.keys(orgGuests).length;
         const dt = new Date();
+        const urlParams = new URLSearchParams(this.props.location.search);
+        const backTo = urlParams.get('backTo');
+        const appTitle = backTo ? 'Back' : 'Home';
 
         const viewTitle =  width === 1
           ? <AppBarMobile
-              title="Home"
+              title={appTitle}
               basePath={basePath}
               tab
+              titleLink={backTo}
               leftMenu={[
                 <MenuItem primaryText="Refresh" type="refresh" />
               ]} />
@@ -89,34 +92,38 @@ class HomeDashboard extends Component {
                 </div>
               </div>
               <List style={styles.list}>
-                { subLevelList.map((subOrg, key) => (
-                  <ListItem
-                    style={styles.item}
-                    key={key}
-                    containerElement={<Link to={`/campaigns-${subRole[role]}-home/${subOrg.id}`} />}
-                    secondaryTextLines={2}
-                    primaryText={
-                      <span>{subOrg.title || subOrg.name}</span>
-                    }
-                    secondaryText={
-                      <span style={styles.subItem}>
-                        Total: {subOrg.guests} |
-                        Scheduled: {subOrg.scheduled} |
-                        Completed: {subOrg.completed}
-                        <br /> Status: {subOrg.status}
-                      </span>
-                    }
-                    rightIcon= {
-                      <div style={styles.rightItem}>
-                        <div  style={styles.rightMost}>
-                          <div style={styles.comPer}>{subOrg.percent}%</div>
+                { subLevelList.map((subOrg, key) => {
+                  const linkEl =  role !== 'unit'
+                    ? { containerElement: <Link to={ `/campaigns-${subRole[role]}-home/${subOrg.id}?backTo=${window.location.hash.replace('#/', '/')}`} /> }
+                    : { };
+                  return (
+                    <ListItem
+                      style={styles.item}
+                      key={key}
+                      { ...linkEl }
+                      secondaryTextLines={2}
+                      primaryText={
+                        <span>{subOrg.title || subOrg.name}</span>
+                      }
+                      secondaryText={
+                        <span style={styles.subItem}>
+                          Total: {subOrg.guests} |
+                          Scheduled: {subOrg.scheduled} |
+                          Completed: {subOrg.completed}
+                          <br /> Status: {subOrg.status}
+                        </span>
+                      }
+                      rightIcon= {
+                        <div style={styles.rightItem}>
+                          <div  style={styles.rightMost}>
+                            <div style={styles.comPer}>{subOrg.percent}%</div>
+                          </div>
+                          <div style={styles.statusPer}>Completed</div>
                         </div>
-                        <div style={styles.statusPer}>Completed</div>
-                      </div>
-                    }
+                      }
 
-                  />
-                ))}
+                    />)
+                })}
               </List>
           </div>
         );

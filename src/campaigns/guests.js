@@ -3,6 +3,7 @@ import { Datagrid, TextField, Responsive, ReferenceField, SimpleShowLayout, Refe
   EditButton, SelectInput, TextInput, FormTab, CheckboxGroupInput, ReferenceInput, AutocompleteInput, SelectField, LongTextInput  } from 'admin-on-rest';
 import AutoComplete from 'material-ui/AutoComplete';
 import SimpleList from '../mui/list/simpleList'
+import FlatButton from 'material-ui/FlatButton';
 import List from '../mui/list';
 import Create from '../mui/detail/create';
 import Edit from '../mui/detail/edit';
@@ -180,9 +181,15 @@ const getGuestForm = () => (
     <FormTab label="Guest" >
       <TextInput source="name"  options={{ fullWidth: true }} />
       <TextInput source="phoneNo" label="Phone No" options={{ fullWidth: true }}/>
-      <ReferenceInput label="Place to identify" source="place" reference="places" filter={{ unitId }} allowEmpty >
-        <AutocompleteInput optionText="name"  options={{ fullWidth: true }} filter={AutoComplete.caseInsensitiveFilter} maxSearchResults={5} />
+      <ReferenceInput label="Place to identify" source="place" reference="places" filter={{ unitId }} allowEmpty style={{ display: 'inline-block', width: '55%' }} >
+        <AutocompleteInput optionText="name"  options={{ fullWidth: true }} filter={AutoComplete.caseInsensitiveFilter} maxSearchResults={5}     />
       </ReferenceInput>
+      <FlatButton
+        href={`/#/places/create?backTo=${window.location.hash.replace('#/', '/')}`}
+        label="Add Place"
+        primary
+        style={{ display: 'inline-block', backgroundColor: '#eef7f6', marginLeft: 8 }}
+      />
       <ReferenceInput label="Member Referred by" source="referredBy" reference="users" filter={{ unitId }} allowEmpty >
         <SelectInput optionText="displayName"  options={{ fullWidth: true }}/>
       </ReferenceInput>

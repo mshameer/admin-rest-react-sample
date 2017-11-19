@@ -77,7 +77,7 @@ class Login extends Component {
                 <div style={{ ...styles.main, backgroundColor: primary1Color }}>
                     <Card style={styles.card}>
                         <div style={styles.avatar}>
-                            <img src="./logo.jpeg"  alt="Sauhrda Hastham"/>
+                            <img src="./icons/icon-192x192.png"  alt="Sauhrda Hastham"/>
                         </div>
                         <form onSubmit={handleSubmit(this.login)}>
                             <div style={styles.form}>
