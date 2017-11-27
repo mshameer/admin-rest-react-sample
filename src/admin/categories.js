@@ -1,8 +1,10 @@
 import React from 'react';
-import { Edit, Create, Datagrid, TextField, EditButton, SimpleForm, TextInput, Responsive } from 'admin-on-rest';
+import { Datagrid, TextField, EditButton, SimpleForm, TextInput, Responsive } from 'admin-on-rest';
 import Layers from 'material-ui/svg-icons/maps/layers';
 import List from '../mui/list';
 import SimpleList from '../mui/list/simpleList';
+import Create from '../mui/detail/create';
+import Edit from '../mui/detail/edit';
 import Avatar from 'material-ui/Avatar';
 
 export const CategoryList = (props) => (

@@ -1,31 +1,16 @@
 import React from 'react';
 import { Datagrid, ReferenceField, TextField, EditButton,
-  ReferenceInput, SelectInput, TextInput, DisabledInput, Filter, Responsive } from 'admin-on-rest';
+  ReferenceInput, SelectInput, TextInput, Filter, Responsive } from 'admin-on-rest';
 import { hasPermission, getCurrentUser, getRoles, STATE_LEVEL_PERMISSION, DISTRICT_LEVEL_PERMISSION, ZONE_LEVEL_PERMISSION } from '../utils/permissions';
-import DepOnRefInput from './depOnRefInput';
 import UserForm from '../users/userForm';
 import List from '../mui/list';
 import Create from '../mui/detail/create';
 import Edit from '../mui/detail/edit';
 import SimpleList from '../mui/list/simpleList';
 import Avatar from 'material-ui/Avatar';
-
+import { orgLevelInput, getPermissionBasedFilters } from '../utils/common';
 
 const currentUser = getCurrentUser();
-const orgLevelInput = (source, reference, label, role, dependsOn) => {
-  const RefInput = dependsOn ? DepOnRefInput : ReferenceInput;
-  if(hasPermission(role, STATE_LEVEL_PERMISSION)) {
-    return (
-        <RefInput label={label} source={source} reference={reference} dependsOn={dependsOn} allowEmpty>
-            <SelectInput optionText="name" options={{ fullWidth: true }}  />
-        </RefInput>
-    );
-  } else {
-    return (
-      <DisabledInput source={source} reference={reference}  defaultValue={currentUser[source]} style={{ display: 'none'}}/>
-    );
-  }
-}
 const roleInput = (role) => {
   if(hasPermission(role, ZONE_LEVEL_PERMISSION)) {
     return (
@@ -38,24 +23,6 @@ const roleInput = (role) => {
   }
 }
 
-const getPermissionBasedFilters = () => {
-  const { districtId, zoneId, unitId, role } = currentUser;
-  const filter = { districtId, zoneId, unitId };
-
-  if(hasPermission(role, STATE_LEVEL_PERMISSION)) {
-    delete(filter.districtId);
-    delete(filter.zoneId);
-    delete(filter.unitId);
-  } else if(hasPermission(role, DISTRICT_LEVEL_PERMISSION)) {
-    delete(filter.zoneId);
-    delete(filter.unitId);
-  } else if(hasPermission(role, ZONE_LEVEL_PERMISSION)) {
-    delete(filter.unitId);
-  }
-
-  return filter;
-}
-
 const UserFilter = (props) => (
     <Filter {...props}>
         <TextInput label="Search" source="q" alwaysOn />
@@ -66,7 +33,7 @@ const UserFilter = (props) => (
 export const UserList = (props) => (
   <List
     {...props}
-    filter={ getPermissionBasedFilters() }
+    filter={ getPermissionBasedFilters(currentUser) }
     filters={<UserFilter />}
     title="Members"
   >
@@ -151,9 +118,9 @@ const getUserForm = (role, action) => (
     <ReferenceInput label="Category" source="categoryId" reference="categories" allowEmpty >
       <SelectInput optionText="shortName" options={{ fullWidth: true }} />
     </ReferenceInput>
-    { orgLevelInput('districtId', 'districts', 'District', role) }
-    { orgLevelInput('zoneId', 'zones', 'Zone', role, 'districtId') }
-    { orgLevelInput('unitId', 'units', 'Unit', role, 'zoneId') }
+    { orgLevelInput('districtId', 'districts', 'District', currentUser) }
+    { orgLevelInput('zoneId', 'zones', 'Zone', currentUser, 'districtId') }
+    { orgLevelInput('unitId', 'units', 'Unit', currentUser, 'zoneId') }
     { roleInput(role) }
   </UserForm>
 )

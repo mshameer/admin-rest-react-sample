@@ -1,8 +1,10 @@
 import React from 'react';
-import { Edit, Create, Datagrid, ReferenceField, TextField, Responsive,
+import { Datagrid, ReferenceField, TextField, Responsive,
   EditButton, ReferenceInput, SelectInput, SimpleForm, TextInput } from 'admin-on-rest';
 import SimpleList from '../mui/list/simpleList'
 import List from '../mui/list';
+import Create from '../mui/detail/create';
+import Edit from '../mui/detail/edit';
 import Avatar from 'material-ui/Avatar';
 import Snooze from 'material-ui/svg-icons/av/snooze';
 

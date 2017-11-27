@@ -7,12 +7,14 @@ import SimpleList from '../mui/list/simpleList';
 import Avatar from 'material-ui/Avatar';
 import { getCurrentUser} from '../utils/permissions';
 import Place from 'material-ui/svg-icons/maps/place';
+import { orgLevelInput, getPermissionBasedFilters } from '../utils/common';
+
 
 const currentUser = getCurrentUser();
 const UnitField = ({ source, record = {} }) => <span>Unit: {record[source]}</span>;
 
 export const PlaceList = (props) => (
-  <List {...props} title="Places"  filter={{ unitId: currentUser.unitId }}>
+  <List {...props} title="Places" filter={ getPermissionBasedFilters(currentUser) } >
     <Responsive
       small={
         <SimpleList leftAvatar={record => <Avatar icon={<Place />} />} >
@@ -24,7 +26,13 @@ export const PlaceList = (props) => (
       }
       medium={
         <Datagrid>
-          <TextField label="Place Name" source="name" />
+          <TextField label="Name" source="name" />
+          <ReferenceField label="District" source="districtId" reference="districts" >
+            <TextField source="name" />
+          </ReferenceField>
+          <ReferenceField label="Zone" source="zoneId" reference="zones" >
+            <TextField source="name" />
+          </ReferenceField>
           <ReferenceField label="Unit" source="unitId" reference="units" >
             <TextField source="name" />
           </ReferenceField>
@@ -47,20 +55,23 @@ const PlaceTitle = ({ record }) => {
     return errors
   };
 
+const getPlaceForm = () => (
+  <SimpleForm validate={validatePlaceForm} redirect="/places" >
+    <TextInput label="Name" source="name" options={{ fullWidth: true }} />
+    { orgLevelInput('districtId', 'districts', 'District', currentUser) }
+    { orgLevelInput('zoneId', 'zones', 'Zone', currentUser, 'districtId') }
+    { orgLevelInput('unitId', 'units', 'Unit', currentUser, 'zoneId') }
+  </SimpleForm>
+)
+
   export const PlaceEdit = (props) => (
     <Edit title={<PlaceTitle />} {...props}>
-      <SimpleForm validate={validatePlaceForm} redirect="/places" >
-        <TextInput label="Name" source="name"  autocomplete="off" role="presentation" />
-        <TextField source="unitId" style={{ display: 'none'}} defaultValue={currentUser.unitId}  />
-      </SimpleForm>
+      { getPlaceForm() }
     </Edit>
   );
 
   export const PlaceCreate = (props) => (
     <Create {...props}>
-      <SimpleForm validate={validatePlaceForm} redirect="/places" >
-        <TextInput label="Name" source="name" />
-        <TextField source="unitId" style={{ display: 'none'}} defaultValue={currentUser.unitId} />
-      </SimpleForm>
+      { getPlaceForm() }
     </Create>
   );
