@@ -3,9 +3,8 @@
 import fetch from 'isomorphic-fetch'
 import qs from 'qs';
 
-const apiConfig = {
-	url: 'https://us-central1-souhrda-hastham.cloudfunctions.net/app/api',
-}
+import apiConfig from '../config/firebase';
+import { envFb } from '../App';
 
 export const exceptionExtractError = (exception) => {
 	if (!exception.Errors) return false;
@@ -32,7 +31,7 @@ export const fetchApi = (endPoint, payload = {}, reMethod = 'get', headers = {})
 	} else {
 		options.body = JSON.stringify(payload);
 	}
-	return fetch(`${apiConfig.url}${url}`, options).then( response => {
+	return fetch(`${apiConfig[envFb].apiUrl}${url}`, options).then( response => {
 		if (response.status === 204) {
 			return response.text();
 		}

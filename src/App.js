@@ -22,7 +22,6 @@ import AppLayout from './mui/layout/appLayout.js';
 import firebaseConfig from './config/firebase';
 import Home from './campaigns/dashboard/';
 
-console.log(process.env.REACT_APP_SECRET_CODE);
 const trackedResources = [
   'districts',
   'zones',
@@ -36,9 +35,11 @@ const trackedResources = [
   'places',
 ];
 
+export const envFb = process.env.REACT_APP_ENV || 'staging'
+
 const App = () => (
     <Admin
-      restClient={RestClient(trackedResources, firebaseConfig)}
+      restClient={RestClient(trackedResources, firebaseConfig[envFb])}
       authClient={AuthClient}
       dashboard={Home}
       appLayout={AppLayout}
@@ -65,3 +66,4 @@ const App = () => (
 export default App;
 // https://github.com/firebase/functions-samples
 // https://console.firebase.google.com/project/souhrda-hastham/settings/serviceaccounts/adminsdk
+// https://firebase.googleblog.com/2016/07/deploy-to-multiple-environments-with.html

@@ -1,5 +1,7 @@
 {
   "projects": {
-    "default": "souhrda-hastham"
+    "default": "souhrda-hastham",
+    "production": "sh-app-production",
+    "staging": "souhrda-hastham"
   }
 }
