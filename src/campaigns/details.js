@@ -1,7 +1,7 @@
 import React, { createElement } from 'react';
 import { Route, Switch } from 'react-router-dom';
 import { Datagrid, TextField, Responsive, ReferenceArrayField, ReferenceField,
-  EditButton, ChipField, SingleFieldList, SelectField } from 'admin-on-rest';
+  EditButton, ChipField, SingleFieldList, SelectField, translate } from 'admin-on-rest';
 import Actors from 'material-ui/svg-icons/av/recent-actors';
 import SimpleList from '../mui/list/simpleList'
 import Avatar from 'material-ui/Avatar';
@@ -12,21 +12,13 @@ import { getCurrentUser} from '../utils/permissions';
 import TabbedList from '../mui/list/tabbedList';
 import TabList from '../mui/list/tabList';
 
-const campaignStatus = [
-  { id: 'notScheduled', name: 'Not Scheduled' },
-  { id: 'scheduled', name: 'Scheduled' },
-  { id: 'completed', name: 'Completed' },
-];
-
-const nextActionChoices = [
-  { id: 0, name: 'Visit Again' },
-];
+import { campaignStatus, nextActionChoices } from '../utils/options';
 
 const currentUser = getCurrentUser();
 
-const CampaignDetails = (props) => (
-  <TabbedList {...props}  title="Campaign">
-    <TabList resource="guests" title="Guests" basePath="guests"  filter={{ unitId: currentUser.unitId }} sort={{ field: 'created_at', order: 'DESC' }} >
+const CampaignDetails = translate(({ translate, ...others } ) => (
+  <TabbedList {...others}  title={translate('campaigns.title')}>
+    <TabList resource="guests" title={translate('resources.guests')} basePath="guests"  filter={{ unitId: currentUser.unitId }} sort={{ field: 'created_at', order: 'DESC' }} >
       <Responsive
         small={
           <SimpleList
@@ -43,22 +35,22 @@ const CampaignDetails = (props) => (
         }
         medium={
           <Datagrid>
-            <TextField label="Name" source="name" />
-            <TextField label="Phone No" source="phoneNo" />
-            <ReferenceField label="Unit" source="unitId" reference="units" type="secondary" linkType="none" >
+            <TextField label={translate('common.name')} source="name" />
+            <TextField label={translate('common.phoneNo')} source="phoneNo" />
+            <ReferenceField label={translate('common.unit')} source="unitId" reference="units" type="secondary" linkType="none" >
               <TextField source="name" />
             </ReferenceField>
-            <SelectField label="Next Action"  source="nextAction" choices={nextActionChoices}  />
-            <ReferenceField label="Place" source="place" reference="places" type="secondary" linkType="none" >
+            <SelectField label={translate('guests.next_action')}  source="nextAction" choices={nextActionChoices}  />
+            <ReferenceField label={translate('guests.place')} source="place" reference="places" type="secondary" linkType="none" >
               <TextField source="name" />
             </ReferenceField>
-            <SelectField source="status" choices={campaignStatus}  />
+            <SelectField label={translate('guests.status')} choices={campaignStatus} optionText="name" />
             <EditButton />
           </Datagrid>
         }
         />
     </TabList>
-    <TabList resource="schedule" title="Schedule" basePath="schedule" filter={{ unitId: currentUser.unitId }}>
+    <TabList resource="schedule" title={translate('resources.schedules')} basePath="schedule" filter={{ unitId: currentUser.unitId }}>
       <Responsive
         small={
           <SimpleList leftAvatar={record => <Avatar icon={<Update />} />} >
@@ -72,10 +64,10 @@ const CampaignDetails = (props) => (
         }
         medium={
           <Datagrid>
-            <ReferenceField label="Campaign" source="campaignId" reference="campaigns" >
+            <ReferenceField label={translate('common.campaign')} source="campaignId" reference="campaigns" >
               <TextField source="title" />
             </ReferenceField>
-            <ReferenceField label="Team" source="teamId" reference="teams" >
+            <ReferenceField label={translate('common.team')} source="teamId" reference="teams" >
               <TextField source="name" />
             </ReferenceField>
             <EditButton />
@@ -83,7 +75,7 @@ const CampaignDetails = (props) => (
         }
         />
     </TabList>
-    <TabList resource="teams" title="Teams" basePath="teams" filter={{ unitId: currentUser.unitId }}>
+    <TabList resource="teams" title={translate('resources.teams')} basePath="teams" filter={{ unitId: currentUser.unitId }}>
       <Responsive
         small={
           <SimpleList leftAvatar={record => <Avatar icon={<Carousel />} />} secondaryStyle={{height: 35}} >
@@ -97,8 +89,8 @@ const CampaignDetails = (props) => (
         }
         medium={
           <Datagrid>
-            <TextField label="Team Name" source="name" />
-            <ReferenceArrayField label="Members" reference="users" source="teamMembers">
+            <TextField label={translate('team.team_name')} source="name" />
+            <ReferenceArrayField label={translate('resources.members')} reference="users" source="teamMembers">
                 <SingleFieldList>
                     <ChipField source="displayName" />
                 </SingleFieldList>
@@ -109,7 +101,7 @@ const CampaignDetails = (props) => (
         />
     </TabList>
   </TabbedList>
-)
+))
 
 const restrictPage = (component, route) => {
   const commonProps = {

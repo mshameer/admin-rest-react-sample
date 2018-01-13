@@ -1,4 +1,5 @@
 import React from 'react';
+import { translate } from 'admin-on-rest';
 import List from 'material-ui/List';
 import Business from 'material-ui/svg-icons/communication/business';
 import DeviceHub from 'material-ui/svg-icons/hardware/device-hub';
@@ -54,7 +55,7 @@ const styles = {
   };
 const { displayName = '', role } = getCurrentUser() || {};
 
-export default ({ resources, onMenuTap, logout }) => (
+const Menu = ({ resources, onMenuTap, logout, translate }) => (
   <div>
     <div style={styles.headingBg}>
       <div style={styles.heading}>
@@ -63,55 +64,55 @@ export default ({ resources, onMenuTap, logout }) => (
       </div>
     </div>
     <List>
-      <MenuItem primaryText="Home"  to="/campaigns-home" onClick={onMenuTap} leftIcon={<Dashboard />} />
+      <MenuItem primaryText={translate('menu.home')} to="/campaigns-home" onClick={onMenuTap} leftIcon={<Dashboard />} />
       <WithPermission type={PERMISSION_NOT_EQUAL_TO} role="state" >
-        <MenuItem primaryText="Campaigns"  to="/campaigns-details" onClick={onMenuTap} leftIcon={<Weekend />} />
+        <MenuItem primaryText={translate('resources.campaigns')}  to="/campaigns-details" onClick={onMenuTap} leftIcon={<Weekend />} />
       </WithPermission>
       <WithPermission type={PERMISSION_EQUAL_TO} role="state">
         <MenuItem
-           primaryText="Campaigns"
+           primaryText={translate('resources.campaigns')}
            leftIcon={<Weekend />}
            primaryTogglesNestedList={true}
            nestedItems={[
-              <MenuItem  key={9} primaryText="Guests"  to="/guests" onClick={onMenuTap} leftIcon={<Actors />} />,
-              <MenuItem  key={10} primaryText="Teams"  to="/teams" onClick={onMenuTap} leftIcon={<Carousel />} />,
-              <MenuItem  key={11} primaryText="Schedule"  to="/schedule" onClick={onMenuTap} leftIcon={<Update />} />,
-              <MenuItem  key={12} primaryText="Campaigns"  to="/campaigns" onClick={onMenuTap} leftIcon={<Weekend />} />
+              <MenuItem  key={9} primaryText={translate('resources.guests')}  to="/guests" onClick={onMenuTap} leftIcon={<Actors />} />,
+              <MenuItem  key={10} primaryText={translate('resources.teams')}  to="/teams" onClick={onMenuTap} leftIcon={<Carousel />} />,
+              <MenuItem  key={11} primaryText={translate('resources.schedules')}  to="/schedule" onClick={onMenuTap} leftIcon={<Update />} />,
+              <MenuItem  key={12} primaryText={translate('menu.new_campaign')}  to="/campaigns" onClick={onMenuTap} leftIcon={<Weekend />} />
               ]}
             />
       </WithPermission>
-      <MenuItem primaryText="Members"  to="/users" onClick={onMenuTap} leftIcon={<People />} />
-      <MenuItem primaryText="Places"  to="/places" onClick={onMenuTap} leftIcon={<Place />} />
+      <MenuItem primaryText={translate('resources.members')}  to="/users" onClick={onMenuTap} leftIcon={<People />} />
+      <MenuItem primaryText={translate('resources.places')}  to="/places" onClick={onMenuTap} leftIcon={<Place />} />
       <WithPermission type={STATE_LEVEL_PERMISSION} role={role}>
         <MenuItem
-           primaryText="Organization"
+           primaryText={translate('resources.organization')}
            leftIcon={<DeviceHub />}
            primaryTogglesNestedList={true}
            nestedItems={[
              <MenuItem
                key={1}
-               primaryText="Categories"
+               primaryText={translate('resources.categories')}
                to="/categories"
                onClick={onMenuTap}
                leftIcon={<Layers />}
              />,
              <MenuItem
                key={2}
-               primaryText="District"
+               primaryText={translate('resources.districts')}
                to="/districts"
                onClick={onMenuTap}
                leftIcon={<Business />}
              />,
              <MenuItem
                key={3}
-               primaryText="Zone"
+               primaryText={translate('resources.zones')}
                to="/zones"
                onClick={onMenuTap}
                leftIcon={<Snooze />}
              />,
              <MenuItem
                key={4}
-               primaryText="Unit"
+               primaryText={translate('resources.units')}
                to="/units"
                onClick={onMenuTap}
                leftIcon={<Nature />}
@@ -122,5 +123,6 @@ export default ({ resources, onMenuTap, logout }) => (
       {logout}
     </List>
   </div>
-
 );
+
+export default translate(Menu);

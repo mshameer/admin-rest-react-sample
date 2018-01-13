@@ -1,6 +1,6 @@
 import React from 'react';
 import { Datagrid, ReferenceField, TextField, EditButton,
-  ReferenceInput, SelectInput, TextInput, Filter, Responsive } from 'admin-on-rest';
+  ReferenceInput, SelectInput, TextInput, Filter, Responsive,translate } from 'admin-on-rest';
 import { hasPermission, getCurrentUser, getRoles, STATE_LEVEL_PERMISSION, DISTRICT_LEVEL_PERMISSION, ZONE_LEVEL_PERMISSION } from '../utils/permissions';
 import UserForm from '../users/userForm';
 import List from '../mui/list';
@@ -11,14 +11,14 @@ import Avatar from 'material-ui/Avatar';
 import { orgLevelInput, getPermissionBasedFilters } from '../utils/common';
 
 const currentUser = getCurrentUser();
-const roleInput = (role) => {
+const roleInput = (role, label) => {
   if(hasPermission(role, ZONE_LEVEL_PERMISSION)) {
     return (
-      <SelectInput source="role" choices={getRoles(role)} options={{ fullWidth: true }}  />
+      <SelectInput source="role" label={label} choices={getRoles(role)} options={{ fullWidth: true }}  />
     );
   } else {
     return (
-      <SelectInput source="role" choices={getRoles(role)}  defaultValue="member" style={{ display: 'none'}}/>
+      <SelectInput source="role" label={label} choices={getRoles(role)}  defaultValue="member" style={{ display: 'none'}}/>
     );
   }
 }
@@ -30,12 +30,12 @@ const UserFilter = (props) => (
 );
 
 
-export const UserList = (props) => (
+export const UserList = translate(({ translate, ...props }) => (
   <List
     {...props}
     filter={ getPermissionBasedFilters(currentUser) }
     filters={<UserFilter />}
-    title="Members"
+    title={translate('members.title')}
   >
     { role =>
       <Responsive
@@ -50,29 +50,29 @@ export const UserList = (props) => (
         }
         medium={
           <Datagrid >
-            <TextField label="Name " source="displayName" />
-            <TextField label="User ID" source="phoneNumber" />
-            <ReferenceField label="Category" source="categoryId" reference="categories" >
+            <TextField label={translate('common.name')} source="displayName" />
+            <TextField label={translate('members.user_id')} source="phoneNumber" />
+            <ReferenceField label={translate('members.category')} source="categoryId" reference="categories" >
               <TextField source="shortName" />
             </ReferenceField>
-            <ReferenceField label="District" source="districtId" reference="districts" >
+            <ReferenceField label={translate('common.district')} source="districtId" reference="districts" >
               <TextField source="name" />
             </ReferenceField>
-            <ReferenceField  label="Zone" source="zoneId" reference="zones" >
+            <ReferenceField  label={translate('common.zone')} source="zoneId" reference="zones" >
               <TextField source="name" />
             </ReferenceField>
-            <ReferenceField  label="Unit" source="unitId" reference="units" >
+            <ReferenceField  label={translate('common.unit')} source="unitId" reference="units" >
               <TextField source="name" />
             </ReferenceField>
-            <TextField label="Role" source="role" />
-            <TextField label="Password" source="password" />
+            <TextField label={translate('members.role')} source="role" />
+            <TextField label={translate('members.password')} source="password" />
             <EditButton />
           </Datagrid>
         }
         />
     }
   </List>
-);
+));
 
 const UserTitle = ({ record }) => {
   return <span>User {record ? `"${record.displayName}"` : ''}</span>;
@@ -110,29 +110,29 @@ const validateUserForm = (values) => {
   return errors
 };
 
-const getUserForm = (role, action) => (
+const getUserForm = (role, action, translate) => (
   <UserForm validate={validateUserForm} action={action}>
-    <TextInput source="displayName"  label="Name" options={{ fullWidth: true }} />
-    <TextInput source="phoneNumber" label="Mobile No" options={{ fullWidth: true }} />
-    { action === 'update' && <TextInput source="password" label="Password" options={{ fullWidth: true }} /> }
-    <ReferenceInput label="Category" source="categoryId" reference="categories" allowEmpty >
+    <TextInput source="displayName"  label={translate('common.name')} options={{ fullWidth: true }} />
+    <TextInput source="phoneNumber" label={translate('common.phoneNo')} options={{ fullWidth: true }} />
+    { action === 'update' && <TextInput source="password" label={translate('members.password')} options={{ fullWidth: true }} /> }
+    <ReferenceInput label={translate('members.category')} source="categoryId" reference="categories" allowEmpty >
       <SelectInput optionText="shortName" options={{ fullWidth: true }} />
     </ReferenceInput>
-    { orgLevelInput('districtId', 'districts', 'District', currentUser) }
-    { orgLevelInput('zoneId', 'zones', 'Zone', currentUser, 'districtId') }
-    { orgLevelInput('unitId', 'units', 'Unit', currentUser, 'zoneId') }
-    { roleInput(role) }
+    { orgLevelInput('districtId', 'districts', translate('common.district'), currentUser) }
+    { orgLevelInput('zoneId', 'zones', translate('common.zone'), currentUser, 'districtId') }
+    { orgLevelInput('unitId', 'units', translate('common.unit'), currentUser, 'zoneId') }
+    { roleInput(role, translate('members.role')) }
   </UserForm>
 )
 
-export const UserEdit = (props) => (
-  <Edit title={<UserTitle />} {...props}>
-    { role => getUserForm(role, 'update') }
+export const UserEdit = translate(({ translate, ...props }) => (
+  <Edit title={<UserTitle />} {...props} backTitle={translate('members.title')}>
+    { role => getUserForm(role, 'update', translate) }
   </Edit>
-);
+));
 
-export const UserCreate = (props) => (
-  <Create {...props}>
-    { role => getUserForm(role, 'create') }
+export const UserCreate = translate((translate, ...props) => (
+  <Create {...props} backTitle={translate('members.title')}>
+    { role => getUserForm(role, 'create', translate) }
   </Create>
-);
+));

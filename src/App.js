@@ -21,6 +21,13 @@ import Menu from './mui/layout/menu';
 import AppLayout from './mui/layout/appLayout.js';
 import firebaseConfig from './config/firebase';
 import Home from './campaigns/dashboard/';
+import malayalamMessages from './i18n/ml';
+import englishMessages from './i18n/en';
+
+const messages = {
+    ml: malayalamMessages,
+    en: englishMessages,
+};
 
 const trackedResources = [
   'districts',
@@ -49,6 +56,8 @@ const App = () => (
       customReducers={{ ...appReducers }}
       customSagas={[ ...appSagas ]}
       customRoutes={routes}
+      locale="ml"
+      messages={messages}
     >
       <Resource name="users" list={UserList} edit={UserEdit} create={UserCreate} remove={Delete} />
       <Resource name="districts" list={DistrictList} edit={DistrictEdit} create={DistrictCreate} remove={Delete} />

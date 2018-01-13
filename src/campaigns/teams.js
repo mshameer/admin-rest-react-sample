@@ -1,6 +1,6 @@
 import React from 'react';
 import { Datagrid, TextField, Responsive, CheckboxGroupInput, ReferenceInput, ReferenceArrayField,
-  EditButton, ChipField, SingleFieldList, SimpleForm, TextInput } from 'admin-on-rest';
+  EditButton, ChipField, SingleFieldList, SimpleForm, TextInput, translate } from 'admin-on-rest';
 import SimpleList from '../mui/list/simpleList'
 import List from '../mui/list';
 import Create from '../mui/detail/create';
@@ -11,7 +11,7 @@ import { getCurrentUser} from '../utils/permissions';
 
 const currentUser = getCurrentUser();
 
-export const TeamList = (props) => (
+export const TeamList = translate(({ translate, ...props }) => (
   <List {...props}>
     <Responsive
       small={
@@ -26,8 +26,8 @@ export const TeamList = (props) => (
       }
       medium={
         <Datagrid>
-          <TextField label="Team Name" source="name" />
-          <ReferenceArrayField label="Members" reference="users" source="teamMembers">
+          <TextField label={translate('team.team_name')} source="name" />
+          <ReferenceArrayField label={translate('resources.members')} reference="users" source="teamMembers">
               <SingleFieldList>
                   <ChipField source="displayName" />
               </SingleFieldList>
@@ -37,7 +37,7 @@ export const TeamList = (props) => (
       }
       />
   </List>
-);
+));
 
 const TeamTitle = ({ record }) => {
   return <span>Team {record ? `"${record.name}"` : ''}</span>;
@@ -54,24 +54,24 @@ const validateTeamForm = (values) => {
   return errors
 };
 
-const teamForm = () => (
+const teamForm = (translate) => (
   <SimpleForm validate={validateTeamForm} >
-    <TextInput label="Team Name" source="name" options={{ fullWidth: true }} />
-    <ReferenceInput source="teamMembers" reference="users" label="Team Members" allowEmpty filter={{ unitId: currentUser.unitId }} >
+    <TextInput label={translate('team.form_name')} source="name" options={{ fullWidth: true }} />
+    <ReferenceInput source="teamMembers" reference="users" label={translate('resources.members')} allowEmpty filter={{ unitId: currentUser.unitId }} >
       <CheckboxGroupInput  optionText="displayName"  />
     </ReferenceInput>
     <TextField source="unitId" style={{ display: 'none'}} defaultValue={currentUser.unitId} />
   </SimpleForm>
 )
 
-export const TeamEdit = (props) => (
-  <Edit title={<TeamTitle />} {...props}>
-    { teamForm() }
+export const TeamEdit = translate(({ translate, ...props }) => (
+  <Edit title={<TeamTitle />} {...props} backTitle={translate('resources.campaigns')}>
+    { teamForm(translate) }
   </Edit>
-);
+));
 
-export const TeamCreate = (props) => (
-  <Create {...props}>
-    { teamForm() }
+export const TeamCreate = translate(({ translate, ...props }) => (
+  <Create {...props} backTitle={translate('resources.campaigns')}>
+    { teamForm(translate) }
   </Create>
-);
+));

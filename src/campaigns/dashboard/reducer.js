@@ -10,8 +10,8 @@ const calculateStatus = (totalGuests) => {
   const guests = Object.keys(totalGuests).length;
   const completed = getStatusCount(totalGuests, 'completed');
   const scheduled = getStatusCount(totalGuests, 'scheduled');
-  let status = completed === guests && guests ? 'Completed' : null;
-  status = !status && scheduled === guests  ? 'Not started' : 'In Progress';
+  let status = completed === guests && guests ? 'dashboard.campaign_completed' : null;
+  status = !status && scheduled === guests  ? 'dashboard.not_started' : 'dashboard.campaign_in_progress';
   const percent = guests ? Math.round((completed/guests)*100) : 0;
   return {
     guests,

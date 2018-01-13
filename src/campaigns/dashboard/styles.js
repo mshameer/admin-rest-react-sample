@@ -32,6 +32,19 @@ const styles = {
     width: 30,
     height: 30,
   },
+  listIconRight: {
+    fill: '#888585',
+    width: 16,
+    height: 16,
+    marginBottom: '-4px',
+    marginLeft: '10px',
+  },
+  listIconLeft: {
+    fill: '#888585',
+    width: 16,
+    height: 16,
+    marginBottom: '-4px',
+  },
   buttonStyle: {
     borderRight: '1px solid #FFF'
   },

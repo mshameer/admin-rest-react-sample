@@ -1,6 +1,6 @@
 import React from 'react';
 import { Datagrid, ReferenceField, TextField, EditButton,
-  ReferenceInput, SelectInput, SimpleForm, TextInput, Responsive } from 'admin-on-rest';
+  ReferenceInput, SelectInput, SimpleForm, TextInput, Responsive, SelectField } from 'admin-on-rest';
 import DepOnRefInput from '../mui/form/depOnRefInput';
 import SimpleList from '../mui/list/simpleList'
 import List from '../mui/list';
@@ -8,6 +8,12 @@ import Create from '../mui/detail/create';
 import Edit from '../mui/detail/edit';
 import Nature from 'material-ui/svg-icons/image/nature';
 import Avatar from 'material-ui/Avatar';
+
+const gradeChoices = [
+  { id: 0, name: 'A' },
+  { id: 1, name: 'B' },
+  { id: 2, name: 'C' },
+];
 
 export const UnitList = (props) => (
   <List {...props}>
@@ -25,11 +31,13 @@ export const UnitList = (props) => (
           <ReferenceField  label="Zone" source="zoneId" reference="zones" type='secondaryPlus' linkType="none" >
             <TextField source="name" />
           </ReferenceField>
+          <SelectField source="grade" choices={gradeChoices} type="tertiary" optionText="name" />
         </SimpleList>
       }
       medium={
         <Datagrid>
           <TextField label="Name" source="name" />
+          <TextField label="Grade" source="grade" />
           <ReferenceField label="District" source="districtId" reference="districts" >
             <TextField source="name" />
           </ReferenceField>
@@ -61,6 +69,7 @@ const UnitTitle = ({ record }) => {
     return errors
   };
 
+
   export const UnitEdit = (props) => (
     <Edit title={<UnitTitle />} {...props}>
       <SimpleForm validate={validateUnitForm} >
@@ -71,6 +80,7 @@ const UnitTitle = ({ record }) => {
           <SelectInput optionText="name" />
         </DepOnRefInput>
         <TextInput source="name" />
+        <SelectInput source="grade" label="Grade" choices={gradeChoices}  />
         <TextInput source="email" />
       </SimpleForm>
     </Edit>

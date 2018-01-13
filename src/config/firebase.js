@@ -15,6 +15,6 @@ export default {
     projectId: "sh-app-production",
     storageBucket: "sh-app-production.appspot.com",
     messagingSenderId: "666409336072",
-    apiUrl: 'https://us-central1-souhrda-hastham.cloudfunctions.net/app/api',
+    apiUrl: 'https://us-central1-sh-app-production.cloudfunctions.net/app/api',
   }
 }

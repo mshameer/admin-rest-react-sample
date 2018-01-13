@@ -12,12 +12,14 @@ arrType.prototype.contains = function(element){
 };
 
 const roleRules = {
-    state: { id: 'state', name: 'State Admin' },
-    district: { id: 'district', name: 'District Admin' },
-    zone: { id: 'zone', name: 'Zone Admin' },
-    unit: { id: 'unit', name: 'Unit Admin' },
-    member: { id: 'member', name: 'Member' },
+    state: { id: 'state', name: 'സ്റ്റേറ്റ് അഡ്മിൻ' },
+    district: { id: 'district', name: 'ജില്ലാ അഡ്മിൻ' },
+    zone: { id: 'zone', name: 'മേഖല അഡ്മിൻ' },
+    unit: { id: 'unit', name: 'യൂണിറ്റ് അഡ്മിൻ' },
+    member: { id: 'member', name: 'യൂണിറ്റ് മെബർ' },
+    member: { id: 'roots', name: 'റൂട്സ് ജില്ലാ അഡ്മിൻ' },
 };
+
 
 const permissionRules  = {
   state: STATE_LEVEL_PERMISSION,
@@ -37,7 +39,7 @@ export function getCurrentUser(){
 
 export function hasPermission(role, type, ) {
   const currentUser = getCurrentUser();
-  
+
   switch(type){
     case APP_LOGIN_PERMISSION:
       return ['state', 'district', 'zone', 'unit'].contains(role);

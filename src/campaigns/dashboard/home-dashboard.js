@@ -3,6 +3,7 @@ import PropTypes from 'prop-types';
 import compose from 'recompose/compose';
 import muiThemeable from 'material-ui/styles/muiThemeable';
 import { CardTitle } from 'material-ui/Card';
+import { translate } from 'admin-on-rest';
 import AppBarMobile from '../../mui/layout/appBarMobile';
 import withWidth from 'material-ui/utils/withWidth';
 import MenuItem from 'material-ui/MenuItem';
@@ -12,6 +13,7 @@ import { Link } from 'react-router-dom';
 import { connect } from 'react-redux';
 
 import People from 'material-ui/svg-icons/social/people';
+import AlamOn from 'material-ui/svg-icons/action/alarm-on';
 import Weekend from 'material-ui/svg-icons/content/weekend';
 import { loadDashBoardData } from './../dashboard/actions';
 
@@ -39,6 +41,7 @@ class HomeDashboard extends Component {
             subLevelList,
             chartData,
             role,
+            translate,
         } = this.props;
         const basePath = this.props.location.pathname.replace(/\/$/, '');
         const title = role === 'state' ?  'State Level' : adminOrg.name;
@@ -71,7 +74,7 @@ class HomeDashboard extends Component {
               {viewTitle}
               <div style={{backgroundColor: muiTheme.home.dashColor, paddingBottom: 20}}>
                 <h3 style={styles.title}>{title}</h3>
-                <h4 style={styles.subtitle}>Campagin Status | {dt.toLocaleDateString()}</h4>
+                <h4 style={styles.subtitle}>{translate('dashboard.campaign_status')} | {dt.toLocaleDateString()}</h4>
                 <div style={styles.chart}>
                   { chartRen }
                 </div>
@@ -107,10 +110,9 @@ class HomeDashboard extends Component {
                       }
                       secondaryText={
                         <span style={styles.subItem}>
-                          Total: {subOrg.guests} |
-                          Scheduled: {subOrg.scheduled} |
-                          Completed: {subOrg.completed}
-                          <br /> Status: {subOrg.status}
+                          <People style={styles.listIconLeft} /> {translate('dashboard.total')} : {subOrg.guests}
+                          <AlamOn style={styles.listIconRight} /> {translate('dashboard.scheduled')} : {subOrg.scheduled}
+                          <br /> {translate('dashboard.completed')} : {subOrg.completed} | {translate(subOrg.status)}
                         </span>
                       }
                       rightIcon= {
@@ -121,7 +123,6 @@ class HomeDashboard extends Component {
                           <div style={styles.statusPer}>Completed</div>
                         </div>
                       }
-
                     />)
                 })}
               </List>
@@ -139,6 +140,7 @@ HomeDashboard.propTypes = {
     orgGuests: PropTypes.array,
     chartData: PropTypes.array,
     subLevelList: PropTypes.array,
+    translate: PropTypes.func,
 };
 
 HomeDashboard.defaultProps = {
@@ -159,6 +161,7 @@ const mapStateToProps = state => ({
 const enhance = compose(
   muiThemeable(),
   withWidth(),
+  translate,
   connect(mapStateToProps, {
     loadData: loadDashBoardData,
   })
